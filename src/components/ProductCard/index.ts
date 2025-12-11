@@ -1,2 +1,1 @@
-// Componentes de negocio
 export { ProductCard } from './ProductCard'
