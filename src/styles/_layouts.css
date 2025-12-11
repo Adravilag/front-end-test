@@ -167,6 +167,12 @@
       font-size: var(--text-sm);
       outline: none;
       transition: all var(--transition-fast);
+      background-color: var(--color-bg-primary);
+      color: var(--color-text-primary);
+
+      &::placeholder {
+        color: var(--color-text-muted);
+      }
 
       &:focus {
         border-color: var(--color-border-focus);
