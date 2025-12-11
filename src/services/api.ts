@@ -1,6 +1,58 @@
 import { Product } from '../data/products'
 
 const API_URL = 'https://itx-frontend-test.onrender.com/api'
+const CACHE_EXPIRATION_MS = 60 * 60 * 1000 // 1 hora en milisegundos
+
+// Sistema de caché con localStorage
+interface CacheEntry<T> {
+  data: T
+  timestamp: number
+}
+
+const cache = {
+  get<T>(key: string): T | null {
+    try {
+      const stored = localStorage.getItem(`api_cache_${key}`)
+      if (!stored) return null
+      
+      const entry: CacheEntry<T> = JSON.parse(stored)
+      const now = Date.now()
+      
+      // Verificar si la caché ha expirado (1 hora)
+      if (now - entry.timestamp > CACHE_EXPIRATION_MS) {
+        localStorage.removeItem(`api_cache_${key}`)
+        return null
+      }
+      
+      return entry.data
+    } catch {
+      return null
+    }
+  },
+  
+  set<T>(key: string, data: T): void {
+    try {
+      const entry: CacheEntry<T> = {
+        data,
+        timestamp: Date.now()
+      }
+      localStorage.setItem(`api_cache_${key}`, JSON.stringify(entry))
+    } catch (error) {
+      console.warn('Error saving to cache:', error)
+    }
+  },
+  
+  clear(key?: string): void {
+    if (key) {
+      localStorage.removeItem(`api_cache_${key}`)
+    } else {
+      // Limpiar toda la caché de la API
+      Object.keys(localStorage)
+        .filter(k => k.startsWith('api_cache_'))
+        .forEach(k => localStorage.removeItem(k))
+    }
+  }
+}
 
 export interface ApiProduct {
   id: string
@@ -106,13 +158,24 @@ export const addToCart = async (item: { id: string; colorCode: number; storageCo
 }
 
 export const getProducts = async (): Promise<Product[]> => {
+  // Intentar obtener de caché primero
+  const cached = cache.get<Product[]>('products')
+  if (cached) {
+    return cached
+  }
+
   try {
     const response = await fetch(`${API_URL}/product`)
     if (!response.ok) {
       throw new Error('Failed to fetch products')
     }
     const data: ApiProduct[] = await response.json()
-    return data.map(mapApiProductToProduct)
+    const products = data.map(mapApiProductToProduct)
+    
+    // Guardar en caché
+    cache.set('products', products)
+    
+    return products
   } catch (error) {
     console.error('Error fetching products:', error)
     return []
@@ -120,15 +183,29 @@ export const getProducts = async (): Promise<Product[]> => {
 }
 
 export const getProductById = async (id: string): Promise<Product | undefined> => {
+  // Intentar obtener de caché primero
+  const cached = cache.get<Product>(`product_${id}`)
+  if (cached) {
+    return cached
+  }
+
   try {
     const response = await fetch(`${API_URL}/product/${id}`)
     if (!response.ok) {
       return undefined
     }
     const data: ApiProduct = await response.json()
-    return mapApiProductToProduct(data)
+    const product = mapApiProductToProduct(data)
+    
+    // Guardar en caché
+    cache.set(`product_${id}`, product)
+    
+    return product
   } catch (error) {
     console.error(`Error fetching product ${id}:`, error)
     return undefined
   }
 }
+
+// Exportar funciones de utilidad de caché
+export const clearCache = cache.clear
