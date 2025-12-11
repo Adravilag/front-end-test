@@ -2,6 +2,11 @@ import { describe, it, expect, vi } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
 import { Header } from './Header'
 
+// Mock useCart
+vi.mock('../../context/CartContext', () => ({
+  useCart: () => ({ count: 0 })
+}))
+
 describe('Header', () => {
   it('renders with default logo', () => {
     render(<Header />)

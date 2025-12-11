@@ -1,6 +1,8 @@
 import type { ReactNode } from 'react'
 import { HeaderSearch } from './HeaderSearch'
 import { HeaderMenuButton } from './HeaderMenuButton'
+import { Icon } from '../../ui'
+import { useCart } from '../../context/CartContext'
 
 interface HeaderActionsProps {
   readonly showSearch: boolean
@@ -17,11 +19,20 @@ export function HeaderActions({
   mobileMenuOpen,
   onMenuToggle,
 }: Readonly<HeaderActionsProps>) {
+  const { count } = useCart()
+
   return (
     <div className="header-actions">
       {showSearch && <HeaderSearch onSearch={onSearch} />}
+      
+      <div className="header-cart">
+        <Icon name="cart" size={24} />
+        {count > 0 && <span className="header-cart-count">{count}</span>}
+      </div>
+
       {actions}
       <HeaderMenuButton isOpen={mobileMenuOpen} onToggle={onMenuToggle} />
     </div>
   )
 }
+

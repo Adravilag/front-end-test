@@ -19,6 +19,10 @@ export interface Product {
     camera?: string
   }
   description: string
+  options?: {
+    colors: { code: number; name: string }[]
+    storages: { code: number; name: string }[]
+  }
 }
 
 export const products: Product[] = [

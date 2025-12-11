@@ -30,3 +30,33 @@
   color: white;
 }
 
+/* Header Cart */
+.header-cart {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  color: var(--color-text-primary);
+}
+
+.header-cart-count {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  background-color: var(--color-primary);
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  border-radius: 10px;
+  transform: translate(25%, -25%);
+}
+
+

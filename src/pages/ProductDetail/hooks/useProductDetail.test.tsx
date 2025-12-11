@@ -4,11 +4,13 @@ import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import type { ReactNode } from 'react'
 import { useProductDetail } from './useProductDetail'
 import * as api from '../../../services/api'
+import { CartProvider } from '../../../context/CartContext'
 
 // Mock del servicio API
 vi.mock('../../../services/api', () => ({
   getProductById: vi.fn(),
-  getProducts: vi.fn()
+  getProducts: vi.fn(),
+  addToCart: vi.fn()
 }))
 
 const mockProduct = {
@@ -22,7 +24,11 @@ const mockProduct = {
   images: [],
   stock: 'in-stock',
   specs: { screen: '6.1' },
-  description: ''
+  description: '',
+  options: {
+    colors: [{ code: 1, name: 'Black' }],
+    storages: [{ code: 1, name: '128GB' }]
+  }
 }
 
 const mockProducts = [
@@ -44,14 +50,17 @@ const mockProducts = [
 const createWrapper = (productId: string) => {
   return function Wrapper({ children }: { children: ReactNode }) {
     return (
-      <MemoryRouter initialEntries={[`/product/${productId}`]}>
-        <Routes>
-          <Route path="/product/:id" element={children} />
-        </Routes>
-      </MemoryRouter>
+      <CartProvider>
+        <MemoryRouter initialEntries={[`/product/${productId}`]}>
+          <Routes>
+            <Route path="/product/:id" element={children} />
+          </Routes>
+        </MemoryRouter>
+      </CartProvider>
     )
   }
 }
+
 
 describe('useProductDetail', () => {
   beforeEach(() => {

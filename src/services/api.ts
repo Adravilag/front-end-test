@@ -71,7 +71,37 @@ export const mapApiProductToProduct = (apiProduct: ApiProduct): Product => {
       battery: apiProduct.battery,
       camera: [apiProduct.primaryCamera, apiProduct.secondaryCmera].filter(Boolean).join(' / ')
     },
-    description: `Brand: ${apiProduct.brand}, Model: ${apiProduct.model}, OS: ${apiProduct.os || 'N/A'}`
+    description: `Brand: ${apiProduct.brand}, Model: ${apiProduct.model}, OS: ${apiProduct.os || 'N/A'}`,
+    options: {
+      colors: apiProduct.options?.colors || [],
+      storages: apiProduct.options?.storages || []
+    }
+  }
+}
+
+export const addToCart = async (item: { id: string; colorCode: number; storageCode: number }): Promise<{ count: number }> => {
+  try {
+    const response = await fetch(`${API_URL}/cart`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(item),
+    })
+
+    if (!response.ok) {
+      throw new Error('Failed to add to cart')
+    }
+
+    const data = await response.json()
+    // Handle array response as per API spec
+    if (Array.isArray(data) && data.length > 0) {
+      return data[0]
+    }
+    return data
+  } catch (error) {
+    console.error('Error adding to cart:', error)
+    throw error
   }
 }
 

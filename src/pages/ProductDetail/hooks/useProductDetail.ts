@@ -1,7 +1,8 @@
 import { useMemo, useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { type Product } from '../../../data'
-import { getProductById, getProducts } from '../../../services/api'
+import { getProductById, getProducts, addToCart } from '../../../services/api'
+import { useCart } from '../../../context/CartContext'
 
 interface StockConfig {
   label: string
@@ -26,9 +27,13 @@ const calculateDiscount = (price: number, originalPrice?: number) => {
 export function useProductDetail() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
+  const { addToCartCount } = useCart()
   const [product, setProduct] = useState<Product | undefined>(undefined)
   const [loading, setLoading] = useState(true)
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([])
+  
+  const [selectedColor, setSelectedColor] = useState<number | undefined>(undefined)
+  const [selectedStorage, setSelectedStorage] = useState<number | undefined>(undefined)
 
   useEffect(() => {
     if (id) {
@@ -36,6 +41,17 @@ export function useProductDetail() {
       getProductById(id).then(p => {
         setProduct(p)
         setLoading(false)
+        // Reset selections
+        setSelectedColor(undefined)
+        setSelectedStorage(undefined)
+        
+        // Auto-select the first available option
+        if (p?.options?.colors && p.options.colors.length > 0) {
+          setSelectedColor(p.options.colors[0].code)
+        }
+        if (p?.options?.storages && p.options.storages.length > 0) {
+          setSelectedStorage(p.options.storages[0].code)
+        }
       })
     }
   }, [id])
@@ -51,6 +67,20 @@ export function useProductDetail() {
       })
     }
   }, [product])
+
+  const handleAddToCart = async () => {
+    if (!product || !selectedColor || !selectedStorage) return
+    try {
+      const { count } = await addToCart({
+        id: product.id,
+        colorCode: selectedColor,
+        storageCode: selectedStorage
+      })
+      addToCartCount(count)
+    } catch (error) {
+      console.error('Failed to add to cart', error)
+    }
+  }
 
   const discount = useMemo(
     () => product ? calculateDiscount(product.price, product.originalPrice) : null,
@@ -74,5 +104,11 @@ export function useProductDetail() {
     relatedProducts,
     specs,
     goHome,
+    selectedColor,
+    setSelectedColor,
+    selectedStorage,
+    setSelectedStorage,
+    handleAddToCart
   }
 }
+

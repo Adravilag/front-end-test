@@ -1,4 +1,4 @@
-import { Button, PanelAction } from '../../ui'
+import { Button, PanelAction, Icon } from '../../ui'
 import { useProductDetail } from './hooks'
 import {
   Breadcrumb,
@@ -11,7 +11,10 @@ import {
 import './ProductDetail.css'
 
 export default function ProductDetail() {
-  const { product, loading, discount, stockInfo, relatedProducts, specs, goHome } = useProductDetail()
+  const { 
+    product, loading, discount, stockInfo, relatedProducts, specs, goHome,
+    selectedColor, setSelectedColor, selectedStorage, setSelectedStorage, handleAddToCart
+  } = useProductDetail()
 
   if (loading) {
     return (
@@ -56,12 +59,48 @@ export default function ProductDetail() {
 
           <p className="product-detail-description">{product.description}</p>
 
+          {product.options?.colors && product.options.colors.length > 0 && (
+            <div className="product-detail-options">
+              <h3 className="product-detail-options-title">Color</h3>
+              <div className="product-detail-options-group">
+                {product.options.colors.map(c => (
+                  <button 
+                    key={c.code}
+                    className={`product-detail-option-btn ${selectedColor === c.code ? 'active' : ''}`}
+                    onClick={() => setSelectedColor(c.code)}
+                  >
+                    {c.name}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {product.options?.storages && product.options.storages.length > 0 && (
+            <div className="product-detail-options">
+              <h3 className="product-detail-options-title">Almacenamiento</h3>
+              <div className="product-detail-options-group">
+                {product.options.storages.map(s => (
+                  <button 
+                    key={s.code}
+                    className={`product-detail-option-btn ${selectedStorage === s.code ? 'active' : ''}`}
+                    onClick={() => setSelectedStorage(s.code)}
+                  >
+                    {s.name}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
           <div className="product-detail-actions">
             <Button
               variant="primary"
               size="lg"
               fullWidth
-              disabled={product.stock === 'out-of-stock'}
+              icon={<Icon name="cart-add" size={20} />}
+              disabled={product.stock === 'out-of-stock' || !selectedColor || !selectedStorage}
+              onClick={handleAddToCart}
             >
               {product.stock === 'out-of-stock' ? 'No disponible' : 'Añadir al carrito'}
             </Button>
@@ -75,3 +114,4 @@ export default function ProductDetail() {
     </div>
   )
 }
+
