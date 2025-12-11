@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { PaginatedGrid } from './PaginatedList'
+import { PaginatedGrid, type PaginatedGridProps } from './PaginatedList'
 import { Card, Image, Button, Icon } from '../'
 
 interface Product {
@@ -75,7 +75,10 @@ const ProductCard = ({ product }: { product: Product }) => (
   </Card>
 )
 
-const meta = {
+const renderProduct = (product: Product) => <ProductCard product={product} />
+const extractKey = (item: Product) => item.id
+
+const meta: Meta<PaginatedGridProps<Product>> = {
   title: 'UI/PaginatedGrid',
   component: PaginatedGrid,
   parameters: {
@@ -102,104 +105,104 @@ const meta = {
       description: 'Etiqueta para los items (ej: "productos", "usuarios")',
     },
   },
-} satisfies Meta<typeof PaginatedGrid>
+}
 
 export default meta
-type Story = StoryObj<typeof meta>
+type Story = StoryObj<PaginatedGridProps<Product>>
 
 export const Default: Story = {
   args: {
     items: mockProducts,
-    renderItem: (product: Product) => <ProductCard product={product} />,
+    renderItem: renderProduct,
     itemsPerPage: 12,
     itemsLabel: 'productos',
     columns: 4,
-    keyExtractor: (item: Product) => item.id,
+    keyExtractor: extractKey,
   },
 }
 
 export const EightPerPage: Story = {
   args: {
     items: mockProducts,
-    renderItem: (product: Product) => <ProductCard product={product} />,
+    renderItem: renderProduct,
     itemsPerPage: 8,
     itemsLabel: 'productos',
     columns: 4,
-    keyExtractor: (item: Product) => item.id,
+    keyExtractor: extractKey,
   },
 }
 
 export const ThreeColumns: Story = {
   args: {
     items: mockProducts,
-    renderItem: (product: Product) => <ProductCard product={product} />,
+    renderItem: renderProduct,
     itemsPerPage: 9,
     itemsLabel: 'productos',
     columns: 3,
-    keyExtractor: (item: Product) => item.id,
+    keyExtractor: extractKey,
   },
 }
 
 export const TwoColumns: Story = {
   args: {
     items: mockProducts.slice(0, 20),
-    renderItem: (product: Product) => <ProductCard product={product} />,
+    renderItem: renderProduct,
     itemsPerPage: 6,
     itemsLabel: 'productos',
     columns: 2,
-    keyExtractor: (item: Product) => item.id,
+    keyExtractor: extractKey,
   },
 }
 
 export const WithoutSelector: Story = {
   args: {
     items: mockProducts,
-    renderItem: (product: Product) => <ProductCard product={product} />,
+    renderItem: renderProduct,
     itemsPerPage: 12,
     showItemsPerPageSelector: false,
     itemsLabel: 'productos',
     columns: 4,
-    keyExtractor: (item: Product) => item.id,
+    keyExtractor: extractKey,
   },
 }
 
 export const FewProducts: Story = {
   args: {
     items: mockProducts.slice(0, 7),
-    renderItem: (product: Product) => <ProductCard product={product} />,
+    renderItem: renderProduct,
     itemsPerPage: 12,
     itemsLabel: 'productos',
     columns: 4,
-    keyExtractor: (item: Product) => item.id,
+    keyExtractor: extractKey,
   },
 }
 
 export const SinglePage: Story = {
   args: {
     items: mockProducts.slice(0, 8),
-    renderItem: (product: Product) => <ProductCard product={product} />,
+    renderItem: renderProduct,
     itemsPerPage: 12,
     itemsLabel: 'productos',
     columns: 4,
-    keyExtractor: (item: Product) => item.id,
+    keyExtractor: extractKey,
   },
 }
 
 export const ManyPages: Story = {
   args: {
     items: generateMockProducts(200),
-    renderItem: (product: Product) => <ProductCard product={product} />,
+    renderItem: renderProduct,
     itemsPerPage: 12,
     itemsLabel: 'productos',
     columns: 4,
-    keyExtractor: (item: Product) => item.id,
+    keyExtractor: extractKey,
   },
 }
 
 export const EmptyGrid: Story = {
   args: {
     items: [],
-    renderItem: (product: Product) => <ProductCard product={product} />,
+    renderItem: renderProduct,
     itemsPerPage: 12,
     itemsLabel: 'productos',
     columns: 4,

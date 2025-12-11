@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Icon } from '../Icon/Icon'
+import { Icon, type IconName } from '../Icon/Icon'
 import './Toast.css'
 
 interface ToastProps {
@@ -11,7 +11,7 @@ interface ToastProps {
   showProgress?: boolean
 }
 
-const typeConfig = {
+const typeConfig: Record<string, { icon: IconName; title: string }> = {
   info: { icon: 'info', title: 'Información' },
   warning: { icon: 'alert', title: 'Advertencia' },
   error: { icon: 'error', title: 'Error' },
