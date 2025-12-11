@@ -1,6 +1,6 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import type { Product } from '../../data'
-import { Card, Image, Icon, Button } from '../../ui'
+import { Card, Image } from '../../ui'
 import './ProductCard.css'
 
 interface ProductCardProps {
@@ -8,7 +8,6 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-  const navigate = useNavigate()
   const hasDiscount = product.originalPrice && product.originalPrice > product.price
   const discountPercent = hasDiscount
     ? Math.round((1 - product.price / product.originalPrice!) * 100)
@@ -58,19 +57,6 @@ export function ProductCard({ product }: ProductCardProps) {
           </span>
         </div>
       </Link>
-
-      <div className="product-card-actions">
-        <Button
-          variant="primary"
-          size="sm"
-          fullWidth
-          icon={<Icon name="cart-add" size={16} />}
-          disabled={product.stock === 'out-of-stock'}
-          onClick={() => navigate(`/producto/${product.id}`)}
-        >
-          {product.stock === 'out-of-stock' ? 'No disponible' : 'Añadir al carrito'}
-        </Button>
-      </div>
     </Card>
   )
 }

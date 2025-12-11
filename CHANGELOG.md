@@ -7,7 +7,12 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 
 ## [Unreleased]
 
-## [1.0.1] - 2025-12-11
+## [1.0.1] - 2025-12-12
+
+### Fixed
+- fix(ui): eliminar botón de añadir al carrito de las tarjetas de producto en la página principal
+
+## [1.0.0] - 2025-12-11
 
 ### Changed
 - ci: añadir workflow de tests y lint en push/PR
