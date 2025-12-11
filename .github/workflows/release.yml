@@ -8,39 +8,112 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: main
+
+      - name: Get version from tag
+        id: version
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/v}
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "tag=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
 
       - name: Generate release notes
         id: notes
         run: |
-          # Obtener el tag anterior
           PREV_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
           
           if [ -z "$PREV_TAG" ]; then
-            echo "notes<<EOF" >> $GITHUB_OUTPUT
-            echo "🎉 Primera release" >> $GITHUB_OUTPUT
-            echo "" >> $GITHUB_OUTPUT
-            git log --pretty=format:"- %s" >> $GITHUB_OUTPUT
-            echo "EOF" >> $GITHUB_OUTPUT
+            COMMITS=$(git log --pretty=format:"- %s" | head -20)
           else
-            echo "notes<<EOF" >> $GITHUB_OUTPUT
-            echo "## Cambios desde $PREV_TAG" >> $GITHUB_OUTPUT
-            echo "" >> $GITHUB_OUTPUT
-            git log ${PREV_TAG}..HEAD --pretty=format:"- %s" >> $GITHUB_OUTPUT
-            echo "EOF" >> $GITHUB_OUTPUT
+            COMMITS=$(git log ${PREV_TAG}..HEAD --pretty=format:"- %s")
           fi
+          
+          echo "commits<<EOF" >> $GITHUB_OUTPUT
+          echo "$COMMITS" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+          echo "prev_tag=$PREV_TAG" >> $GITHUB_OUTPUT
+
+      - name: Update CHANGELOG
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          DATE=$(date +%Y-%m-%d)
+          COMMITS="${{ steps.notes.outputs.commits }}"
+          
+          # Crear nuevo contenido del changelog
+          cat > CHANGELOG_NEW.md << 'HEADER'
+          # Changelog
+
+          Todos los cambios notables de este proyecto serán documentados en este archivo.
+
+          El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
+          y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
+
+          ## [Unreleased]
+
+          HEADER
+          
+          echo "## [$VERSION] - $DATE" >> CHANGELOG_NEW.md
+          echo "" >> CHANGELOG_NEW.md
+          echo "### Changed" >> CHANGELOG_NEW.md
+          echo "$COMMITS" >> CHANGELOG_NEW.md
+          echo "" >> CHANGELOG_NEW.md
+          
+          # Añadir versiones anteriores (si existen)
+          if grep -q "## \[" CHANGELOG.md; then
+            sed -n '/## \[0-9\]/,$p' CHANGELOG.md | tail -n +2 >> CHANGELOG_NEW.md 2>/dev/null || true
+          fi
+          
+          # Añadir sección de formato de commits
+          cat >> CHANGELOG_NEW.md << 'FOOTER'
+          ---
+
+          ## Formato de commits
+
+          Usar [Conventional Commits](https://www.conventionalcommits.org/):
+
+          ```
+          feat: nueva funcionalidad
+          fix: corrección de bug
+          docs: cambios en documentación
+          style: formato (no afecta código)
+          refactor: refactorización
+          test: añadir o modificar tests
+          chore: tareas de mantenimiento
+          ci: cambios en CI/CD
+          ```
+          FOOTER
+          
+          mv CHANGELOG_NEW.md CHANGELOG.md
+
+      - name: Update package.json version
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          sed -i "s/\"version\": \".*\"/\"version\": \"$VERSION\"/" package.json
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add CHANGELOG.md package.json
+          git commit -m "docs: actualizar CHANGELOG y versión a ${{ steps.version.outputs.tag }}" || echo "No changes to commit"
+          git push origin main
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           generate_release_notes: true
           body: |
-            ${{ steps.notes.outputs.notes }}
+            ## Cambios en ${{ steps.version.outputs.tag }}
+            
+            ${{ steps.notes.outputs.commits }}
             
             ---
-            **Full Changelog**: https://github.com/${{ github.repository }}/compare/${{ steps.notes.outputs.prev_tag }}...${{ github.ref_name }}
+            **Full Changelog**: https://github.com/${{ github.repository }}/compare/${{ steps.notes.outputs.prev_tag }}...${{ steps.version.outputs.tag }}
