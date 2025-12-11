@@ -1,0 +1,507 @@
+/* ===========================================
+   Button Component
+   =========================================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-weight: var(--btn-font-weight);
+  border-radius: var(--btn-radius);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  font-family: var(--font-sans);
+  line-height: var(--leading-normal);
+
+  &:focus-visible {
+    outline: 2px solid var(--color-border-focus);
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* Sizes */
+  &-sm {
+    padding: var(--space-1) var(--space-3);
+    font-size: var(--text-sm);
+  }
+
+  &-md {
+    padding: var(--space-2) var(--space-4);
+    font-size: var(--text-base);
+  }
+
+  &-lg {
+    padding: var(--space-3) var(--space-6);
+    font-size: var(--text-lg);
+  }
+
+  /* Variants */
+  &-primary {
+    background-color: var(--color-primary);
+    color: var(--color-text-inverse);
+    border-color: var(--color-primary);
+
+    &:hover:not(:disabled) {
+      background-color: var(--color-primary-hover);
+      border-color: var(--color-primary-hover);
+    }
+  }
+
+  &-secondary {
+    background-color: var(--color-secondary);
+    color: var(--color-text-inverse);
+    border-color: var(--color-secondary);
+
+    &:hover:not(:disabled) {
+      background-color: var(--color-secondary-hover);
+      border-color: var(--color-secondary-hover);
+    }
+  }
+
+  &-outline {
+    background-color: transparent;
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+
+    &:hover:not(:disabled) {
+      background-color: var(--color-primary);
+      color: var(--color-text-inverse);
+    }
+  }
+
+  &-ghost {
+    background-color: transparent;
+    color: var(--color-text-primary);
+    border-color: transparent;
+
+    &:hover:not(:disabled) {
+      background-color: var(--color-bg-tertiary);
+    }
+  }
+
+  &-danger {
+    background-color: var(--color-danger);
+    color: var(--color-text-inverse);
+    border-color: var(--color-danger);
+
+    &:hover:not(:disabled) {
+      background-color: var(--color-danger-hover);
+      border-color: var(--color-danger-hover);
+    }
+  }
+
+  /* States */
+  &-full {
+    width: 100%;
+  }
+
+  &-loading {
+    position: relative;
+    color: transparent;
+  }
+
+  &-spinner {
+    position: absolute;
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: var(--radius-full);
+    animation: btn-spin 0.75s linear infinite;
+  }
+
+  &-loading &-spinner {
+    color: white;
+  }
+
+  &-icon-left,
+  &-icon-right {
+    display: inline-flex;
+    align-items: center;
+  }
+}
+
+@keyframes btn-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ===========================================
+   Input Component
+   =========================================== */
+.input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+
+  &.input-full {
+    width: 100%;
+  }
+}
+
+.input-label {
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--color-text-secondary);
+}
+
+.input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input {
+  width: 100%;
+  border: 1px solid var(--input-border);
+  border-radius: var(--input-radius);
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  font-family: inherit;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+
+  &:focus {
+    outline: none;
+    border-color: var(--color-border-focus);
+    box-shadow: var(--input-focus-ring);
+  }
+
+  &:disabled {
+    background-color: var(--color-bg-secondary);
+    color: var(--color-text-muted);
+    cursor: not-allowed;
+  }
+
+  &::placeholder {
+    color: var(--color-text-muted);
+  }
+
+  /* Sizes */
+  &-sm {
+    padding: var(--space-1) var(--space-3);
+    font-size: var(--text-sm);
+  }
+
+  &-md {
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--text-base);
+  }
+
+  &-lg {
+    padding: var(--space-3) var(--space-4);
+    font-size: var(--text-lg);
+  }
+
+  /* With Icons */
+  &-with-left-icon {
+    padding-left: 2.5rem;
+  }
+
+  &-with-right-icon {
+    padding-right: 2.5rem;
+  }
+
+  /* States */
+  &-error {
+    border-color: var(--color-danger);
+
+    &:focus {
+      border-color: var(--color-danger);
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+    }
+  }
+}
+
+.input-icon-left,
+.input-icon-right {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-gray-400);
+  pointer-events: none;
+}
+
+.input-icon-left {
+  left: 0.75rem;
+}
+
+.input-icon-right {
+  right: 0.75rem;
+}
+
+.input-error-text {
+  font-size: var(--text-sm);
+  color: var(--color-danger);
+}
+
+.input-helper-text {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+/* ===========================================
+   Card Component
+   =========================================== */
+.card {
+  border-radius: var(--card-radius);
+  overflow: hidden;
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  transition: box-shadow var(--transition-fast);
+
+  &-default {
+    border: 1px solid var(--color-border);
+  }
+
+  &-outlined {
+    border: 2px solid var(--color-border-dark);
+  }
+
+  &-elevated {
+    border: 1px solid var(--color-border);
+    box-shadow: var(--card-shadow);
+
+    &:hover {
+      box-shadow: var(--card-shadow-hover);
+    }
+  }
+
+  &-image {
+    width: 100%;
+    overflow: hidden;
+
+    & img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+      background-color: var(--color-bg-tertiary);
+    }
+  }
+
+  &-header {
+    padding: var(--space-4) var(--space-4) 0;
+  }
+
+  &-body {
+    padding: var(--space-4);
+
+    &-no-padding {
+      padding: 0;
+    }
+  }
+
+  &-footer {
+    padding: 0 var(--space-4) var(--space-4);
+  }
+}
+
+/* ===========================================
+   Carousel Component
+   =========================================== */
+.carousel {
+  position: relative;
+  width: 100%;
+
+  &-container {
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    height: 100%;
+  }
+
+  &-track {
+    display: flex;
+    transition: transform var(--transition-normal);
+    height: 100%;
+  }
+
+  &-slide {
+    flex: 0 0 100%;
+    min-width: 100%;
+    height: 100%;
+
+    & img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      background-color: var(--color-gray-100);
+    }
+  }
+
+  &-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 1px solid var(--color-gray-200);
+    border-radius: var(--radius-full);
+    font-size: 1.5rem;
+    color: var(--color-gray-700);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    z-index: 10;
+
+    &:hover:not(:disabled) {
+      background-color: white;
+      box-shadow: var(--shadow-sm);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    &-prev {
+      left: var(--space-2);
+    }
+
+    &-next {
+      right: var(--space-2);
+    }
+  }
+
+  &-indicators {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-2);
+    padding: var(--space-4) 0;
+  }
+
+  &-indicator {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: var(--radius-full);
+    border: none;
+    background-color: var(--color-gray-300);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    padding: 0;
+
+    &:hover {
+      background-color: var(--color-gray-400);
+    }
+
+    &-active {
+      background-color: var(--color-primary);
+      width: 1.5rem;
+      border-radius: var(--radius-sm);
+    }
+  }
+}
+
+/* ===========================================
+   PanelAction Component
+   =========================================== */
+.panel-action {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  border: 1px solid;
+
+  &-default {
+    background-color: var(--color-bg-secondary);
+    border-color: var(--color-border);
+    color: var(--color-text-secondary);
+  }
+
+  &-info {
+    background-color: var(--color-info-light);
+    border-color: #bfdbfe;
+    color: #1e40af;
+  }
+
+  &-success {
+    background-color: var(--color-success-light);
+    border-color: #bbf7d0;
+    color: #166534;
+  }
+
+  &-warning {
+    background-color: var(--color-warning-light);
+    border-color: #fde68a;
+    color: #92400e;
+  }
+
+  &-error {
+    background-color: var(--color-danger-light);
+    border-color: #fecaca;
+    color: #991b1b;
+  }
+
+  &-icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &-content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &-title {
+    font-weight: var(--font-semibold);
+    margin-bottom: var(--space-1);
+  }
+
+  &-description {
+    font-size: var(--text-sm);
+    opacity: 0.9;
+  }
+
+  &-body {
+    margin-top: var(--space-2);
+  }
+
+  &-actions {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+  }
+
+  &-dismiss {
+    flex-shrink: 0;
+    width: 1.5rem;
+    height: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 1.25rem;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: opacity var(--transition-fast);
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+/* ===========================================
+   Typography Helpers
+   =========================================== */
+.font-sans {
+  font-family: var(--font-sans);
+}
+
+.font-display {
+  font-family: var(--font-display);
+}

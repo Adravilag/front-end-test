@@ -1,0 +1,189 @@
+/* ===========================================
+   Header Component
+   =========================================== */
+.header {
+  background-color: var(--header-bg);
+  border-bottom: 1px solid var(--header-border);
+  z-index: var(--z-header);
+
+  &-sticky {
+    position: sticky;
+    top: 0;
+  }
+
+  &-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 var(--space-4);
+    height: var(--header-height);
+  }
+
+  &-logo {
+    display: flex;
+    align-items: center;
+
+    &-text {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      font-weight: var(--font-semibold);
+      color: var(--color-text-primary);
+    }
+  }
+
+  &-nav {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+
+    &-desktop {
+      display: none;
+
+      @media (min-width: 768px) {
+        display: flex;
+      }
+    }
+
+    &-mobile {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      background-color: var(--color-bg-primary);
+      border-bottom: 1px solid var(--color-border);
+      padding: var(--space-4);
+      box-shadow: var(--shadow-md);
+
+      @media (min-width: 768px) {
+        display: none !important;
+      }
+    }
+
+    &-item {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: var(--space-2) var(--space-4);
+      color: var(--color-text-secondary);
+      text-decoration: none;
+      border-radius: var(--radius-md);
+      font-size: var(--text-sm);
+      font-weight: var(--font-medium);
+      transition: all var(--transition-fast);
+
+      &:hover {
+        color: var(--color-text-primary);
+        background-color: var(--color-bg-tertiary);
+      }
+
+      &-active {
+        color: var(--color-primary);
+        background-color: var(--color-brand-primary-light);
+
+        &:hover {
+          color: var(--color-primary-hover);
+          background-color: var(--color-brand-primary-light);
+        }
+      }
+    }
+  }
+
+  &-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  &-icon-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border: none;
+    background-color: transparent;
+    color: var(--color-text-secondary);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+
+    &:hover {
+      background-color: var(--color-bg-tertiary);
+      color: var(--color-text-primary);
+    }
+  }
+
+  &-menu-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border: none;
+    background-color: transparent;
+    color: var(--color-text-secondary);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+
+    &:hover {
+      background-color: var(--color-bg-tertiary);
+      color: var(--color-text-primary);
+    }
+
+    @media (min-width: 768px) {
+      display: none;
+    }
+  }
+
+  &-search {
+    display: flex;
+    align-items: center;
+
+    &-form {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    &-input {
+      width: 200px;
+      padding: var(--space-2) var(--space-4);
+      border: 1px solid var(--color-border);
+      border-radius: var(--input-radius);
+      font-size: var(--text-sm);
+      outline: none;
+      transition: all var(--transition-fast);
+
+      &:focus {
+        border-color: var(--color-border-focus);
+        box-shadow: var(--input-focus-ring);
+      }
+
+      @media (max-width: 767px) {
+        width: 150px;
+      }
+    }
+
+    &-close {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 2rem;
+      height: 2rem;
+      border: none;
+      background-color: transparent;
+      color: var(--color-text-muted);
+      cursor: pointer;
+      border-radius: var(--radius-sm);
+
+      &:hover {
+        background-color: var(--color-bg-tertiary);
+        color: var(--color-text-primary);
+      }
+    }
+  }
+}
