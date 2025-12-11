@@ -9,7 +9,7 @@ import './App.css'
 
 function AppContent() {
   const { items: breadcrumbItems } = useBreadcrumbContext()
-  const { notification, dismissNotification } = useCart()
+  const { expiredCount, clearExpiredNotification } = useCart()
 
   return (
     <>
@@ -25,10 +25,10 @@ function AppContent() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
-      {notification && (
+      {expiredCount > 0 && (
         <Toast 
-          message={notification} 
-          onDismiss={dismissNotification}
+          message={`Se ${expiredCount === 1 ? 'ha eliminado 1 producto' : `han eliminado ${expiredCount} productos`} del carrito por expiración`}
+          onDismiss={clearExpiredNotification}
           type="warning"
         />
       )}
