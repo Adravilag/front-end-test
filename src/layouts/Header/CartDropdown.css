@@ -11,13 +11,14 @@
   right: 0;
   width: 360px;
   max-height: 480px;
-  background: var(--color-surface, white);
+  background: white;
   border-radius: var(--radius-lg, 0.75rem);
-  box-shadow: var(--shadow-xl, 0 20px 25px -5px rgba(0, 0, 0, 0.1));
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
   z-index: 100;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  border: 1px solid var(--color-border);
 }
 
 .cart-dropdown-header {
@@ -59,14 +60,14 @@
   align-items: center;
   gap: var(--spacing-sm, 0.75rem);
   padding: var(--spacing-md, 1rem);
-  background: var(--color-warning-light, #fffbeb);
-  border-bottom: 1px solid var(--color-warning, #f59e0b);
+  background: var(--color-warning-light);
+  border-bottom: 1px solid var(--color-warning);
 
   & p {
     margin: 0;
     font-size: var(--text-sm, 0.875rem);
     font-weight: var(--font-medium, 500);
-    color: var(--color-text-primary, #111827);
+    color: var(--color-text-primary);
   }
 }
 
@@ -87,21 +88,21 @@
 
 .cart-dropdown-confirm-cancel {
   background: transparent;
-  border: 1px solid var(--color-border, #d1d5db);
-  color: var(--color-text-secondary, #6b7280);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
 
   &:hover {
-    background: var(--color-bg-secondary, #f3f4f6);
+    background: var(--color-bg-tertiary);
   }
 }
 
 .cart-dropdown-confirm-ok {
-  background: var(--color-error, #ef4444);
-  border: 1px solid var(--color-error, #ef4444);
-  color: white;
+  background: var(--color-danger);
+  border: 1px solid var(--color-danger);
+  color: var(--color-text-inverse);
 
   &:hover {
-    background: var(--color-error-dark, #dc2626);
+    background: var(--color-danger-hover);
   }
 }
 
@@ -140,7 +141,7 @@
   transition: background 0.2s;
 
   &:hover {
-    background: var(--color-bg-secondary, #f3f4f6);
+    background: var(--color-bg-tertiary);
   }
 }
 
@@ -162,15 +163,15 @@
   height: 28px;
   border: none;
   background: transparent;
-  color: var(--color-text-tertiary, #9ca3af);
+  color: var(--color-text-muted);
   cursor: pointer;
   border-radius: var(--radius-full, 9999px);
   transition: all 0.2s;
   flex-shrink: 0;
 
   &:hover {
-    background: var(--color-error-light, #fef2f2);
-    color: var(--color-error, #ef4444);
+    background: var(--color-danger-light);
+    color: var(--color-danger);
   }
 }
 
@@ -179,7 +180,7 @@
   height: 56px;
   object-fit: cover;
   border-radius: var(--radius-md, 0.5rem);
-  background: var(--color-bg-secondary, #f3f4f6);
+  background: var(--color-bg-tertiary);
 }
 
 .cart-dropdown-item-info {
@@ -192,7 +193,7 @@
 .cart-dropdown-item-name {
   font-weight: var(--font-medium, 500);
   font-size: var(--text-sm, 0.875rem);
-  color: var(--color-text-primary, #111827);
+  color: var(--color-text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -200,19 +201,19 @@
 
 .cart-dropdown-item-options {
   font-size: var(--text-xs, 0.75rem);
-  color: var(--color-text-tertiary, #9ca3af);
+  color: var(--color-text-muted);
 }
 
 .cart-dropdown-item-price {
   font-weight: var(--font-semibold, 600);
   font-size: var(--text-sm, 0.875rem);
-  color: var(--color-primary, #3b82f6);
+  color: var(--color-primary);
   margin-top: auto;
 }
 
 .cart-dropdown-footer {
   padding: var(--spacing-md, 1rem);
-  border-top: 1px solid var(--color-border-light, #e5e7eb);
+  border-top: 1px solid var(--color-border);
 }
 
 .cart-dropdown-total {
@@ -225,7 +226,7 @@
 .cart-dropdown-total-price {
   font-weight: var(--font-bold, 700);
   font-size: var(--text-lg, 1.125rem);
-  color: var(--color-text-primary, #111827);
+  color: var(--color-text-primary);
 }
 
 @media (max-width: 480px) {
