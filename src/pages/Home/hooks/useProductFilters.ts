@@ -1,5 +1,6 @@
-import { useState } from 'react'
-import { products, type Product } from '../../../data'
+import { useState, useEffect } from 'react'
+import { type Product } from '../../../data'
+import { getProducts } from '../../../services/api'
 import { useDebounce } from '../../../hooks'
 
 export type CategoryFilter = 'all' | Product['category']
@@ -15,22 +16,31 @@ const matchesSearch = (product: Product, term: string) =>
   product.name.toLowerCase().includes(term) ||
   product.brand.toLowerCase().includes(term)
 
-const filterProducts = (search: string, category: CategoryFilter) =>
-  products.filter(p =>
-    matchesSearch(p, search.toLowerCase()) &&
-    (category === 'all' || p.category === category)
-  )
-
 export function useProductFilters() {
+  const [products, setProducts] = useState<Product[]>([])
+  const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
   const [category, setCategory] = useState<CategoryFilter>('all')
   const debouncedSearch = useDebounce(search, 300)
 
+  useEffect(() => {
+    getProducts().then(data => {
+      setProducts(data)
+      setLoading(false)
+    })
+  }, [])
+
+  const filteredProducts = products.filter(p =>
+    matchesSearch(p, debouncedSearch.toLowerCase()) &&
+    (category === 'all' || p.category === category)
+  )
+
   return {
     search,
     category,
-    filteredProducts: filterProducts(debouncedSearch, category),
+    filteredProducts,
     setSearch,
     setCategory,
+    loading,
   }
 }

@@ -1,6 +1,7 @@
-import { useMemo } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { getProductById, products, type Product } from '../../../data'
+import { type Product } from '../../../data'
+import { getProductById, getProducts } from '../../../services/api'
 
 interface StockConfig {
   label: string
@@ -25,7 +26,31 @@ const calculateDiscount = (price: number, originalPrice?: number) => {
 export function useProductDetail() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
-  const product = id ? getProductById(id) : undefined
+  const [product, setProduct] = useState<Product | undefined>(undefined)
+  const [loading, setLoading] = useState(true)
+  const [relatedProducts, setRelatedProducts] = useState<Product[]>([])
+
+  useEffect(() => {
+    if (id) {
+      setLoading(true)
+      getProductById(id).then(p => {
+        setProduct(p)
+        setLoading(false)
+      })
+    }
+  }, [id])
+
+  useEffect(() => {
+    if (product) {
+      getProducts().then(allProducts => {
+        setRelatedProducts(
+          allProducts
+            .filter(p => p.category === product.category && p.id !== product.id)
+            .slice(0, 4)
+        )
+      })
+    }
+  }, [product])
 
   const discount = useMemo(
     () => product ? calculateDiscount(product.price, product.originalPrice) : null,
@@ -33,13 +58,6 @@ export function useProductDetail() {
   )
 
   const stockInfo = product ? STOCK_CONFIG[product.stock] : null
-
-  const relatedProducts = useMemo(
-    () => product
-      ? products.filter(p => p.category === product.category && p.id !== product.id).slice(0, 4)
-      : [],
-    [product]
-  )
 
   const specs = useMemo(
     () => product ? Object.entries(product.specs).filter(([, value]) => value) : [],
@@ -50,6 +68,7 @@ export function useProductDetail() {
 
   return {
     product,
+    loading,
     discount,
     stockInfo,
     relatedProducts,

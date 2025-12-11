@@ -5,7 +5,7 @@ import { useProductFilters, CATEGORIES, type CategoryFilter as CategoryType } fr
 import './Home.css'
 
 export default function Home() {
-  const { search, category, filteredProducts, setSearch, setCategory } = useProductFilters()
+  const { search, category, filteredProducts, setSearch, setCategory, loading } = useProductFilters()
 
   return (
     <div className="home">
@@ -34,7 +34,11 @@ export default function Home() {
       <section className="home-products">
         <ProductsHeader category={category} count={filteredProducts.length} />
 
-        {filteredProducts.length > 0 ? (
+        {loading ? (
+          <div className="home-loading" style={{ textAlign: 'center', padding: '4rem' }}>
+            <p>Cargando productos...</p>
+          </div>
+        ) : filteredProducts.length > 0 ? (
           <div className="home-products-grid">
             {filteredProducts.map(product => (
               <ProductCard key={product.id} product={product} />

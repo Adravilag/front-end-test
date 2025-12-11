@@ -1,84 +1,135 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
-import { renderHook, act } from '@testing-library/react'
+import { renderHook, act, waitFor } from '@testing-library/react'
 import { useProductFilters, CATEGORIES } from './useProductFilters'
+import * as api from '../../../services/api'
+
+// Mock del servicio API
+vi.mock('../../../services/api', () => ({
+  getProducts: vi.fn()
+}))
+
+const mockProducts = [
+  { 
+    id: '1', 
+    name: 'iPhone 15', 
+    brand: 'Apple', 
+    category: 'smartphones', 
+    price: 1000, 
+    image: '', 
+    images: [], 
+    stock: 'in-stock', 
+    specs: {}, 
+    description: '' 
+  },
+  { 
+    id: '2', 
+    name: 'iPad Pro', 
+    brand: 'Apple', 
+    category: 'tablets', 
+    price: 800, 
+    image: '', 
+    images: [], 
+    stock: 'in-stock', 
+    specs: {}, 
+    description: '' 
+  },
+]
 
 describe('useProductFilters', () => {
   beforeEach(() => {
-    vi.useFakeTimers()
+    vi.mocked(api.getProducts).mockResolvedValue(mockProducts as any)
   })
 
   afterEach(() => {
-    vi.useRealTimers()
+    vi.clearAllMocks()
   })
 
-  it('inicia con valores por defecto', () => {
+  // Eliminamos fake timers globales para evitar conflictos con waitFor
+
+  it('inicia con valores por defecto', async () => {
     const { result } = renderHook(() => useProductFilters())
     
+    expect(result.current.loading).toBe(true)
+    
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false)
+    })
+
     expect(result.current.search).toBe('')
     expect(result.current.category).toBe('all')
-    expect(result.current.filteredProducts.length).toBeGreaterThan(0)
+    expect(result.current.filteredProducts.length).toBe(2)
   })
 
-  it('filtra productos por búsqueda después del debounce', () => {
+  it('filtra productos por búsqueda después del debounce', async () => {
     const { result } = renderHook(() => useProductFilters())
     
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false)
+    })
+
     act(() => {
       result.current.setSearch('iPhone')
     })
 
-    act(() => {
-      vi.advanceTimersByTime(300)
+    // Esperar el tiempo del debounce (300ms) + un margen
+    await act(async () => {
+      await new Promise(resolve => setTimeout(resolve, 350))
     })
 
-    expect(result.current.filteredProducts.every(p => 
-      p.name.toLowerCase().includes('iphone') || 
-      p.brand.toLowerCase().includes('iphone')
-    )).toBe(true)
+    expect(result.current.filteredProducts.length).toBe(1)
+    expect(result.current.filteredProducts[0].name).toBe('iPhone 15')
   })
 
-  it('filtra productos por categoría inmediatamente', () => {
+  it('filtra productos por categoría inmediatamente', async () => {
     const { result } = renderHook(() => useProductFilters())
     
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false)
+    })
+
     act(() => {
       result.current.setCategory('smartphones')
     })
 
-    expect(result.current.filteredProducts.every(p => 
-      p.category === 'smartphones'
-    )).toBe(true)
+    expect(result.current.filteredProducts.length).toBe(1)
+    expect(result.current.filteredProducts[0].category).toBe('smartphones')
   })
 
-  it('combina filtros de búsqueda y categoría', () => {
+  it('combina filtros de búsqueda y categoría', async () => {
     const { result } = renderHook(() => useProductFilters())
     
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false)
+    })
+
     act(() => {
-      result.current.setSearch('Samsung')
+      result.current.setSearch('iPad')
       result.current.setCategory('smartphones')
     })
 
-    act(() => {
-      vi.advanceTimersByTime(300)
+    await act(async () => {
+      await new Promise(resolve => setTimeout(resolve, 350))
     })
 
-    const filtered = result.current.filteredProducts
-    expect(filtered.every(p => 
-      p.category === 'smartphones' &&
-      (p.name.toLowerCase().includes('samsung') || p.brand.toLowerCase().includes('samsung'))
-    )).toBe(true)
+    expect(result.current.filteredProducts.length).toBe(0)
   })
 
-  it('devuelve array vacío cuando no hay coincidencias', () => {
+  it('devuelve array vacío cuando no hay coincidencias', async () => {
     const { result } = renderHook(() => useProductFilters())
     
-    act(() => {
-      result.current.setSearch('producto-inexistente-xyz')
+    await waitFor(() => {
+      expect(result.current.loading).toBe(false)
     })
 
     act(() => {
-      vi.advanceTimersByTime(300)
+      result.current.setSearch('xyz')
     })
 
-    expect(result.current.filteredProducts).toHaveLength(0)
+    await act(async () => {
+      await new Promise(resolve => setTimeout(resolve, 350))
+    })
+
+    expect(result.current.filteredProducts.length).toBe(0)
   })
 
   it('CATEGORIES contiene todas las categorías esperadas', () => {

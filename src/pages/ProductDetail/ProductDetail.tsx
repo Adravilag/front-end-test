@@ -11,7 +11,15 @@ import {
 import './ProductDetail.css'
 
 export default function ProductDetail() {
-  const { product, discount, stockInfo, relatedProducts, specs, goHome } = useProductDetail()
+  const { product, loading, discount, stockInfo, relatedProducts, specs, goHome } = useProductDetail()
+
+  if (loading) {
+    return (
+      <div className="product-detail-loading" style={{ textAlign: 'center', padding: '4rem' }}>
+        <p>Cargando producto...</p>
+      </div>
+    )
+  }
 
   if (!product || !discount || !stockInfo) {
     return <NotFoundState onGoHome={goHome} />
