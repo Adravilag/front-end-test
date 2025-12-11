@@ -71,39 +71,43 @@ export default function ProductDetail() {
 
           <p className="product-detail-description">{product.description}</p>
 
-          {product.options?.colors && product.options.colors.length > 0 && (
-            <div className="product-detail-options">
-              <h3 className="product-detail-options-title">Color</h3>
-              <div className="product-detail-options-group">
-                {product.options.colors.map(c => (
-                  <button 
-                    key={c.code}
-                    className={`product-detail-option-btn ${selectedColor === c.code ? 'active' : ''}`}
-                    onClick={() => setSelectedColor(c.code)}
-                  >
-                    {c.name}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
+          <ProductSpecs specs={specs} />
 
-          {product.options?.storages && product.options.storages.length > 0 && (
-            <div className="product-detail-options">
-              <h3 className="product-detail-options-title">Almacenamiento</h3>
-              <div className="product-detail-options-group">
-                {product.options.storages.map(s => (
-                  <button 
-                    key={s.code}
-                    className={`product-detail-option-btn ${selectedStorage === s.code ? 'active' : ''}`}
-                    onClick={() => setSelectedStorage(s.code)}
-                  >
-                    {s.name}
-                  </button>
-                ))}
+          <div className="product-detail-options-row">
+            {product.options?.colors && product.options.colors.length > 0 && (
+              <div className="product-detail-options">
+                <h3 className="product-detail-options-title">Color</h3>
+                <div className="product-detail-options-group">
+                  {product.options.colors.map(c => (
+                    <button 
+                      key={c.code}
+                      className={`product-detail-option-btn ${selectedColor === c.code ? 'active' : ''}`}
+                      onClick={() => setSelectedColor(c.code)}
+                    >
+                      {c.name}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
+            )}
+
+            {product.options?.storages && product.options.storages.length > 0 && (
+              <div className="product-detail-options">
+                <h3 className="product-detail-options-title">Almacenamiento</h3>
+                <div className="product-detail-options-group">
+                  {product.options.storages.map(s => (
+                    <button 
+                      key={s.code}
+                      className={`product-detail-option-btn ${selectedStorage === s.code ? 'active' : ''}`}
+                      onClick={() => setSelectedStorage(s.code)}
+                    >
+                      {s.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
 
           <div className="product-detail-actions">
             <Button
@@ -117,8 +121,6 @@ export default function ProductDetail() {
               {product.stock === 'out-of-stock' ? 'No disponible' : 'Añadir al carrito'}
             </Button>
           </div>
-
-          <ProductSpecs specs={specs} />
         </div>
       </div>
 
