@@ -75,11 +75,11 @@ interface ProductPricingProps {
 export function ProductPricing({ price, originalPrice, savings }: Readonly<ProductPricingProps>) {
   return (
     <div className="product-detail-pricing">
-      <span className="product-detail-price">${price}</span>
+      <span className="product-detail-price">{price} €</span>
       {originalPrice && savings && (
         <>
-          <span className="product-detail-original-price">${originalPrice}</span>
-          <span className="product-detail-discount">Ahorras ${savings}</span>
+          <span className="product-detail-original-price">{originalPrice} €</span>
+          <span className="product-detail-discount">Ahorras {savings} €</span>
         </>
       )}
     </div>

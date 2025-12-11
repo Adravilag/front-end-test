@@ -55,7 +55,7 @@ const ProductCard = ({ product }: { product: Product }) => (
       </h3>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '0.5rem' }}>
         <span style={{ fontSize: '1.25rem', fontWeight: 700, color: '#2563eb' }}>
-          ${product.price}
+          {product.price} €
         </span>
         <span style={{ fontSize: '0.75rem', color: stockColor[product.stock] }}>
           {stockLabel[product.stock]}

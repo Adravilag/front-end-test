@@ -47,9 +47,9 @@ export function ProductCard({ product }: ProductCardProps) {
           <h3 className="product-card-name">{product.name}</h3>
           
           <div className="product-card-pricing">
-            <span className="product-card-price">${product.price}</span>
+            <span className="product-card-price">{product.price} €</span>
             {hasDiscount && (
-              <span className="product-card-original-price">${product.originalPrice}</span>
+              <span className="product-card-original-price">{product.originalPrice} €</span>
             )}
           </div>
 
