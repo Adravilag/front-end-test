@@ -135,6 +135,7 @@ export const CompleteCard: Story = {
 }
 
 export const AllVariants: Story = {
+  args: { children: 'Card content' },
   render: () => (
     <div style={{ display: 'flex', gap: '1rem' }}>
       <Card variant="default" style={{ width: '200px' }}>Default</Card>

@@ -58,6 +58,7 @@ export const Small: Story = {
 }
 
 export const AllIcons: Story = {
+  args: { name: 'home' },
   render: () => (
     <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
       {ICON_NAMES.map((name) => (

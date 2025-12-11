@@ -68,7 +68,7 @@ export const Warning: Story = {
   },
 }
 
-export const Error: Story = {
+export const ErrorPanel: Story = {
   args: {
     variant: 'error',
     title: 'Error',

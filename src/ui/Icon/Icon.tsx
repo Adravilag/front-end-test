@@ -45,6 +45,7 @@ export function Icon({
       width={size}
       height={size}
       className={className}
+      fill="currentColor"
       aria-hidden={!title}
       role={title ? 'img' : undefined}
       aria-label={title}

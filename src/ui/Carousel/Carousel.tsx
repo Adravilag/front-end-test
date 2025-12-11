@@ -1,8 +1,12 @@
-import { useState, useCallback, useEffect, type ReactNode } from 'react'
+import { useState, useCallback, useEffect, type ReactNode, type CSSProperties } from 'react'
 
 export interface CarouselProps {
   /** Items del carrusel */
   children: ReactNode[]
+  /** Ancho del carrusel (ej: '100%', '400px', 300) */
+  width?: string | number
+  /** Alto del carrusel (ej: '300px', 200) */
+  height?: string | number
   /** Índice inicial activo */
   initialIndex?: number
   /** Auto-play habilitado */
@@ -19,6 +23,8 @@ export interface CarouselProps {
   onChange?: (index: number) => void
   /** Clase CSS adicional */
   className?: string
+  /** Estilos adicionales */
+  style?: CSSProperties
 }
 
 /**
@@ -35,10 +41,16 @@ export interface CarouselProps {
  * <Carousel autoPlay autoPlayInterval={5000} showIndicators>
  *   {items.map(item => <Card key={item.id}>{item.content}</Card>)}
  * </Carousel>
+ * 
+ * <Carousel width={400} height={300}>
+ *   {products.map(p => <Image key={p.id} src={p.image} alt={p.name} />)}
+ * </Carousel>
  * ```
  */
 export function Carousel({
   children,
+  width,
+  height,
   initialIndex = 0,
   autoPlay = false,
   autoPlayInterval = 3000,
@@ -47,6 +59,7 @@ export function Carousel({
   loop = true,
   onChange,
   className = '',
+  style,
 }: CarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(initialIndex)
   const totalSlides = children.length
@@ -84,9 +97,19 @@ export function Carousel({
   const canGoPrevious = loop || currentIndex > 0
   const canGoNext = loop || currentIndex < totalSlides - 1
 
+  const carouselStyle: CSSProperties = {
+    ...style,
+    ...(width && { width: typeof width === 'number' ? `${width}px` : width }),
+    ...(height && { height: typeof height === 'number' ? `${height}px` : height }),
+  }
+
+  const slideStyle: CSSProperties = {
+    ...(height && { height: typeof height === 'number' ? `${height}px` : height }),
+  }
+
   return (
-    <div className={`carousel ${className}`} role="region" aria-label="Carrusel">
-      <div className="carousel-container">
+    <div className={`carousel ${className}`} role="region" aria-label="Carrusel" style={carouselStyle}>
+      <div className="carousel-container" style={slideStyle}>
         <div
           className="carousel-track"
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
@@ -98,6 +121,7 @@ export function Carousel({
               role="group"
               aria-roledescription="slide"
               aria-label={`Slide ${index + 1} de ${totalSlides}`}
+              style={slideStyle}
             >
               {child}
             </div>
