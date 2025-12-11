@@ -63,9 +63,9 @@ export function ProductCard({ product }: ProductCardProps) {
           variant="primary"
           size="sm"
           fullWidth
+          icon={<Icon name="arrow-right" size={16} />}
           disabled={product.stock === 'out-of-stock'}
         >
-          <Icon name="arrow-right" size={16} />
           {product.stock === 'out-of-stock' ? 'No disponible' : 'Añadir al carrito'}
         </Button>
       </div>

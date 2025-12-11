@@ -76,6 +76,32 @@ describe('Button', () => {
     expect(screen.getByTestId('right-icon')).toBeInTheDocument()
   })
 
+  it('renderiza el prop icon correctamente', () => {
+    render(
+      <Button 
+        icon={<span data-testid="main-icon">I</span>}
+      >
+        Content
+      </Button>
+    )
+    
+    expect(screen.getByTestId('main-icon')).toBeInTheDocument()
+  })
+
+  it('prioriza icon sobre leftIcon', () => {
+    render(
+      <Button 
+        icon={<span data-testid="main-icon">I</span>}
+        leftIcon={<span data-testid="left-icon">L</span>}
+      >
+        Content
+      </Button>
+    )
+    
+    expect(screen.getByTestId('main-icon')).toBeInTheDocument()
+    expect(screen.queryByTestId('left-icon')).not.toBeInTheDocument()
+  })
+
   it('aplica fullWidth correctamente', () => {
     render(<Button fullWidth>Full Width</Button>)
     expect(screen.getByRole('button')).toHaveClass('btn-full')

@@ -133,8 +133,7 @@ export function NotFoundState({ onGoHome }: Readonly<NotFoundStateProps>) {
     <div className="product-detail-not-found">
       <PanelAction variant="error" title="Producto no encontrado">
         <p>El producto que buscas no existe o ha sido eliminado.</p>
-        <Button variant="primary" onClick={onGoHome}>
-          <Icon name="home" size={16} />
+        <Button variant="primary" onClick={onGoHome} icon={<Icon name="home" size={16} />}>
           Volver al inicio
         </Button>
       </PanelAction>

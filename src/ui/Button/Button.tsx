@@ -12,6 +12,8 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode
   /** Estado de carga */
   loading?: boolean
+  /** Icono principal (se renderiza a la izquierda) */
+  icon?: ReactNode
   /** Icono a la izquierda */
   leftIcon?: ReactNode
   /** Icono a la derecha */
@@ -40,7 +42,7 @@ const sizeStyles: Record<ButtonSize, string> = {
  * @example
  * ```tsx
  * <Button variant="primary">Click me</Button>
- * <Button variant="outline" size="lg" leftIcon={<Icon name="search" />}>Buscar</Button>
+ * <Button variant="outline" size="lg" icon={<Icon name="search" />}>Buscar</Button>
  * <Button loading>Guardando...</Button>
  * ```
  */
@@ -49,6 +51,7 @@ export function Button({
   size = 'md',
   children,
   loading = false,
+  icon,
   leftIcon,
   rightIcon,
   fullWidth = false,
@@ -65,6 +68,8 @@ export function Button({
     className,
   ].filter(Boolean).join(' ')
 
+  const finalLeftIcon = icon || leftIcon
+
   return (
     <button
       className={classes}
@@ -72,7 +77,7 @@ export function Button({
       {...props}
     >
       {loading && <span className="btn-spinner" aria-hidden="true" />}
-      {!loading && leftIcon && <span className="btn-icon-left">{leftIcon}</span>}
+      {!loading && finalLeftIcon && <span className="btn-icon-left">{finalLeftIcon}</span>}
       <span className="btn-content">{children}</span>
       {!loading && rightIcon && <span className="btn-icon-right">{rightIcon}</span>}
     </button>

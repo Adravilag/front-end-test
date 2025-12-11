@@ -33,6 +33,10 @@ const meta = {
       control: 'boolean',
       description: 'Ancho completo',
     },
+    icon: {
+      control: false,
+      description: 'Icono principal (izquierda)',
+    },
   },
   args: {
     onClick: fn(),
@@ -105,10 +109,10 @@ export const Disabled: Story = {
   },
 }
 
-export const WithLeftIcon: Story = {
+export const WithIcon: Story = {
   args: {
     children: 'Search',
-    leftIcon: <Icon name="search" size={16} />,
+    icon: <Icon name="search" size={16} />,
   },
 }
 
@@ -122,7 +126,7 @@ export const WithRightIcon: Story = {
 export const WithBothIcons: Story = {
   args: {
     children: 'Settings',
-    leftIcon: <Icon name="settings" size={16} />,
+    icon: <Icon name="settings" size={16} />,
     rightIcon: <Icon name="arrow-right" size={16} />,
   },
 }

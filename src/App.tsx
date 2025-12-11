@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
 import ProductDetail from './pages/ProductDetail'
-import NotFound from './pages/NotFound'
+import NotFound from './pages/NotFound/NotFound'
 import { Header } from './layouts'
 import './App.css'
 
@@ -16,7 +16,7 @@ function App() {
   return (
     <BrowserRouter>
       <Header
-        logo="MobileStore"
+        logo={<span className="header-logo-text">MobileStore</span>}
         navItems={navItems}
         showSearch
         sticky
