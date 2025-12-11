@@ -128,7 +128,7 @@ export function CartDropdown({ isOpen, onClose }: Readonly<CartDropdownProps>) {
           <div className="cart-dropdown-footer">
             <div className="cart-dropdown-total">
               <span>Total</span>
-              <span className="cart-dropdown-total-price">${total}</span>
+              <span className="cart-dropdown-total-price">{total} €</span>
             </div>
           </div>
         )}
