@@ -10,6 +10,18 @@ const config: StorybookConfig = {
     "@storybook/addon-interactions",
     "@storybook/addon-links"
   ],
-  "framework": "@storybook/react-vite"
+  "framework": "@storybook/react-vite",
+  async viteFinal(config) {
+    const { default: postcssNested } = await import('postcss-nested');
+    
+    return {
+      ...config,
+      css: {
+        postcss: {
+          plugins: [postcssNested()],
+        },
+      },
+    };
+  },
 };
 export default config;
