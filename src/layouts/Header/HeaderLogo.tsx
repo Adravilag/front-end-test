@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { Link } from 'react-router-dom'
 
 interface HeaderLogoProps {
   readonly logo?: ReactNode
@@ -6,8 +7,8 @@ interface HeaderLogoProps {
 
 export function HeaderLogo({ logo }: Readonly<HeaderLogoProps>) {
   return (
-    <div className="header-logo">
+    <Link to="/" className="header-logo">
       {logo ?? <span className="header-logo-text">Logo</span>}
-    </div>
+    </Link>
   )
 }

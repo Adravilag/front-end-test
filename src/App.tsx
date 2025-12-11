@@ -3,23 +3,18 @@ import Home from './pages/Home'
 import ProductDetail from './pages/ProductDetail'
 import NotFound from './pages/NotFound/NotFound'
 import { Header } from './layouts'
+import { BreadcrumbProvider, useBreadcrumbContext } from './context'
 import './App.css'
 
-const navItems = [
-  { label: 'Inicio', href: '/' },
-  { label: 'Smartphones', href: '/?category=smartphones' },
-  { label: 'Tablets', href: '/?category=tablets' },
-  { label: 'Accesorios', href: '/?category=accesorios' },
-]
+function AppContent() {
+  const { items: breadcrumbItems } = useBreadcrumbContext()
 
-function App() {
   return (
-    <BrowserRouter>
+    <>
       <Header
         logo={<span className="header-logo-text">MobileStore</span>}
-        navItems={navItems}
-        showSearch
         sticky
+        breadcrumbItems={breadcrumbItems}
       />
       <main>
         <Routes>
@@ -28,6 +23,16 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
+    </>
+  )
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <BreadcrumbProvider>
+        <AppContent />
+      </BreadcrumbProvider>
     </BrowserRouter>
   )
 }

@@ -3,6 +3,7 @@ import type { HeaderProps } from './Header.types'
 import { HeaderLogo } from './HeaderLogo'
 import { HeaderNav } from './HeaderNav'
 import { HeaderActions } from './HeaderActions'
+import { Breadcrumb } from '../../ui'
 
 function useHeaderClass(sticky: boolean, className: string): string {
   return useMemo(() => {
@@ -23,6 +24,7 @@ export function Header(props: Readonly<HeaderProps>) {
     onMenuClick,
     showSearch = false,
     onSearch,
+    breadcrumbItems,
   } = props
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -37,6 +39,9 @@ export function Header(props: Readonly<HeaderProps>) {
     <header className={headerClass}>
       <div className="header-container">
         <HeaderLogo logo={logo} />
+        {breadcrumbItems && breadcrumbItems.length > 0 && (
+          <Breadcrumb items={breadcrumbItems} className="header-breadcrumb" />
+        )}
         <HeaderNav items={navItems} className="header-nav-desktop" />
         <HeaderActions
           showSearch={showSearch}

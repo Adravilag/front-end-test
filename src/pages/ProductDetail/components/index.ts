@@ -1,5 +1,4 @@
 export {
-  Breadcrumb,
   ProductGallery,
   ProductPricing,
   ProductSpecs,

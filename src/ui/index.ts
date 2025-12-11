@@ -22,3 +22,6 @@ export type { PanelActionProps, PanelActionVariant } from './PanelAction'
 
 export { PaginatedGrid } from './PaginatedList'
 export type { PaginatedGridProps } from './PaginatedList'
+
+export { Breadcrumb } from './Breadcrumb'
+export type { BreadcrumbProps, BreadcrumbItem } from './Breadcrumb'

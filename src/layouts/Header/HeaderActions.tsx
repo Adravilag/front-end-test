@@ -27,7 +27,7 @@ export function HeaderActions({
       
       <div className="header-cart">
         <Icon name="cart" size={24} />
-        {count > 0 && <span className="header-cart-count">{count}</span>}
+        <span className="header-cart-count">{count}</span>
       </div>
 
       {actions}

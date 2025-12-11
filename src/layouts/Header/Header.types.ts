@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import type { BreadcrumbItem } from '../../ui'
 
 export interface NavItem {
   /** Texto del enlace */
@@ -28,4 +29,6 @@ export interface HeaderProps {
   readonly showSearch?: boolean
   /** Callback al buscar */
   readonly onSearch?: (query: string) => void
+  /** Items del breadcrumb */
+  readonly breadcrumbItems?: BreadcrumbItem[]
 }

@@ -1,5 +1,6 @@
 import { describe, it, expect, vi } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
+import { BrowserRouter } from 'react-router-dom'
 import { Header } from './Header'
 
 // Mock useCart
@@ -7,14 +8,18 @@ vi.mock('../../context/CartContext', () => ({
   useCart: () => ({ count: 0 })
 }))
 
+const renderWithRouter = (ui: React.ReactElement) => {
+  return render(<BrowserRouter>{ui}</BrowserRouter>)
+}
+
 describe('Header', () => {
   it('renders with default logo', () => {
-    render(<Header />)
+    renderWithRouter(<Header />)
     expect(screen.getByText('Logo')).toBeInTheDocument()
   })
 
   it('renders custom logo', () => {
-    render(<Header logo={<span>Mi App</span>} />)
+    renderWithRouter(<Header logo={<span>Mi App</span>} />)
     expect(screen.getByText('Mi App')).toBeInTheDocument()
   })
 
@@ -23,7 +28,7 @@ describe('Header', () => {
       { label: 'Inicio', href: '/' },
       { label: 'Acerca', href: '/about' },
     ]
-    render(<Header navItems={navItems} />)
+    renderWithRouter(<Header navItems={navItems} />)
     expect(screen.getByText('Inicio')).toBeInTheDocument()
     expect(screen.getByText('Acerca')).toBeInTheDocument()
   })
@@ -32,7 +37,7 @@ describe('Header', () => {
     const navItems = [
       { label: 'Inicio', href: '/', active: true },
     ]
-    render(<Header navItems={navItems} />)
+    renderWithRouter(<Header navItems={navItems} />)
     const navItem = screen.getAllByText('Inicio')[0]
     expect(navItem).toHaveClass('header-nav-item-active')
   })
@@ -41,28 +46,28 @@ describe('Header', () => {
     const navItems = [
       { label: 'Inicio', href: '/', icon: 'home' as const },
     ]
-    render(<Header navItems={navItems} />)
+    renderWithRouter(<Header navItems={navItems} />)
     expect(screen.getByText('Inicio')).toBeInTheDocument()
   })
 
   it('renders custom actions', () => {
-    render(<Header actions={<button>Login</button>} />)
+    renderWithRouter(<Header actions={<button>Login</button>} />)
     expect(screen.getByText('Login')).toBeInTheDocument()
   })
 
   it('applies sticky class when sticky is true', () => {
-    const { container } = render(<Header sticky />)
+    const { container } = renderWithRouter(<Header sticky />)
     expect(container.querySelector('.header-sticky')).toBeInTheDocument()
   })
 
   it('does not apply sticky class when sticky is false', () => {
-    const { container } = render(<Header sticky={false} />)
+    const { container } = renderWithRouter(<Header sticky={false} />)
     expect(container.querySelector('.header-sticky')).not.toBeInTheDocument()
   })
 
   it('toggles mobile menu on button click', () => {
     const navItems = [{ label: 'Inicio', href: '/' }]
-    render(<Header navItems={navItems} />)
+    renderWithRouter(<Header navItems={navItems} />)
     
     const menuButton = screen.getByRole('button', { name: /abrir menú/i })
     fireEvent.click(menuButton)
@@ -72,7 +77,7 @@ describe('Header', () => {
 
   it('calls onMenuClick when menu button is clicked', () => {
     const handleMenuClick = vi.fn()
-    render(<Header onMenuClick={handleMenuClick} />)
+    renderWithRouter(<Header onMenuClick={handleMenuClick} />)
     
     const menuButton = screen.getByRole('button', { name: /abrir menú/i })
     fireEvent.click(menuButton)
@@ -81,12 +86,12 @@ describe('Header', () => {
   })
 
   it('shows search button when showSearch is true', () => {
-    render(<Header showSearch />)
+    renderWithRouter(<Header showSearch />)
     expect(screen.getByRole('button', { name: /abrir búsqueda/i })).toBeInTheDocument()
   })
 
   it('opens search input when search button is clicked', () => {
-    render(<Header showSearch />)
+    renderWithRouter(<Header showSearch />)
     
     const searchButton = screen.getByRole('button', { name: /abrir búsqueda/i })
     fireEvent.click(searchButton)
@@ -96,7 +101,7 @@ describe('Header', () => {
 
   it('calls onSearch when search form is submitted', () => {
     const handleSearch = vi.fn()
-    render(<Header showSearch onSearch={handleSearch} />)
+    renderWithRouter(<Header showSearch onSearch={handleSearch} />)
     
     const searchButton = screen.getByRole('button', { name: /abrir búsqueda/i })
     fireEvent.click(searchButton)
@@ -109,7 +114,7 @@ describe('Header', () => {
   })
 
   it('applies custom className', () => {
-    const { container } = render(<Header className="custom-header" />)
+    const { container } = renderWithRouter(<Header className="custom-header" />)
     expect(container.querySelector('.custom-header')).toBeInTheDocument()
   })
 })

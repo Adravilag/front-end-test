@@ -1,11 +1,23 @@
+import { useEffect } from 'react'
 import { ProductCard } from '../../components'
 import { Input, Icon, PaginatedGrid } from '../../ui'
 import { HeroSection, CategoryFilter, EmptyState } from './components'
 import { useProductFilters, CATEGORIES, type CategoryFilter as CategoryType } from './hooks'
+import { useBreadcrumbContext } from '../../context'
 import './Home.css'
 
 export default function Home() {
-  const { search, category, filteredProducts, setSearch, setCategory, loading } = useProductFilters()
+  const { search, category, categoryLabel, filteredProducts, setSearch, setCategory, loading } = useProductFilters()
+  const { setItems, clearItems } = useBreadcrumbContext()
+
+  // Actualizar breadcrumb según la categoría seleccionada
+  useEffect(() => {
+    setItems([
+      { label: 'Inicio', href: category === 'all' ? undefined : '/' },
+      { label: categoryLabel }
+    ])
+    return () => clearItems()
+  }, [category, categoryLabel, setItems, clearItems])
 
   return (
     <div className="home">

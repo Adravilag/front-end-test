@@ -1,7 +1,8 @@
+import { useEffect } from 'react'
 import { Button, PanelAction, Icon } from '../../ui'
 import { useProductDetail } from './hooks'
+import { useBreadcrumbContext } from '../../context'
 import {
-  Breadcrumb,
   ProductGallery,
   ProductPricing,
   ProductSpecs,
@@ -15,6 +16,19 @@ export default function ProductDetail() {
     product, loading, discount, stockInfo, relatedProducts, specs, goHome,
     selectedColor, setSelectedColor, selectedStorage, setSelectedStorage, handleAddToCart
   } = useProductDetail()
+  const { setItems, clearItems } = useBreadcrumbContext()
+
+  // Actualizar breadcrumb cuando el producto carga
+  useEffect(() => {
+    if (product) {
+      setItems([
+        { label: 'Inicio', href: '/' },
+        { label: product.category, href: `/?category=${product.category}` },
+        { label: product.name }
+      ])
+    }
+    return () => clearItems()
+  }, [product, setItems, clearItems])
 
   if (loading) {
     return (
@@ -30,8 +44,6 @@ export default function ProductDetail() {
 
   return (
     <div className="product-detail">
-      <Breadcrumb category={product.category} productName={product.name} />
-
       <div className="product-detail-main">
         <ProductGallery
           images={product.images}
