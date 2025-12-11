@@ -14,15 +14,21 @@ export interface CartItem {
   colorName: string
   storageCode: number
   storageName: string
+  quantity: number
   addedAt: number
 }
+
+// Genera una clave única para identificar un producto con sus opciones
+const getItemKey = (item: Pick<CartItem, 'productId' | 'colorCode' | 'storageCode'>) => 
+  `${item.productId}-${item.colorCode}-${item.storageCode}`
 
 interface CartContextType {
   count: number
   items: CartItem[]
   expiredCount: number
-  addItem: (item: CartItem) => void
+  addItem: (item: Omit<CartItem, 'quantity'>) => void
   removeItem: (index: number) => void
+  updateQuantity: (index: number, quantity: number) => void
   clearCart: () => void
   clearExpiredNotification: () => void
 }
@@ -119,10 +125,28 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
   }, [items, lastUpdate])
 
-  const addItem = (item: CartItem) => {
+  const addItem = (item: Omit<CartItem, 'quantity'>) => {
     const now = Date.now()
     setLastUpdate(now)
-    setItems(prev => [...prev, item])
+    
+    setItems(prev => {
+      const itemKey = getItemKey(item)
+      const existingIndex = prev.findIndex(i => getItemKey(i) === itemKey)
+      
+      if (existingIndex >= 0) {
+        // Si ya existe, incrementar cantidad
+        const newItems = [...prev]
+        newItems[existingIndex] = {
+          ...newItems[existingIndex],
+          quantity: newItems[existingIndex].quantity + 1,
+          addedAt: now
+        }
+        return newItems
+      }
+      
+      // Si no existe, añadir nuevo con cantidad 1
+      return [...prev, { ...item, quantity: 1 }]
+    })
   }
 
   const removeItem = (index: number) => {
@@ -131,6 +155,20 @@ export function CartProvider({ children }: { children: ReactNode }) {
       if (newItems.length === 0) {
         setLastUpdate(Date.now())
       }
+      return newItems
+    })
+  }
+
+  const updateQuantity = (index: number, quantity: number) => {
+    if (quantity < 1) {
+      removeItem(index)
+      return
+    }
+    
+    setLastUpdate(Date.now())
+    setItems(prev => {
+      const newItems = [...prev]
+      newItems[index] = { ...newItems[index], quantity }
       return newItems
     })
   }
@@ -144,13 +182,17 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setExpiredCount(0)
   }
 
+  // Contar total de unidades (suma de todas las cantidades)
+  const totalCount = items.reduce((sum, item) => sum + item.quantity, 0)
+
   return (
     <CartContext.Provider value={{ 
-      count: items.length,
+      count: totalCount,
       items,
       expiredCount,
       addItem, 
       removeItem,
+      updateQuantity,
       clearCart,
       clearExpiredNotification
     }}>
