@@ -1,15 +1,24 @@
-# Front-End Test
+# MobileStore - Front-End Test
 
-Proyecto React + TypeScript con Vite.
+Tienda de dispositivos móviles desarrollada con React + TypeScript + Vite.
+
+## 🚀 Demo
+
+[https://mobile-store-demo.netlify.app](https://mobile-store-demo.netlify.app)
 
 ## Requisitos
 
-- Node.js 18+
+- Node.js 18+ (recomendado 20)
 - npm 9+
 
 ## Instalación
 
 ```bash
+# Clonar repositorio
+git clone https://github.com/Adravilag/front-end-test.git
+cd front-end-test
+
+# Instalar dependencias
 npm install
 ```
 
@@ -23,14 +32,32 @@ npm install
 | `npm run lint` | Verificar código con ESLint |
 | `npm run test` | Tests en modo watch |
 | `npm run test:run` | Ejecutar tests una vez |
+| `npm run storybook` | Abrir Storybook (documentación de componentes) |
+
+## Características
+
+- 🛒 Carrito de compras con persistencia en localStorage
+- ⏱️ Expiración automática del carrito (1 hora)
+- 🔍 Búsqueda y filtrado de productos por categoría
+- 📱 Diseño responsive
+- 🎨 Componentes UI reutilizables (Button, Card, Input, Toast, etc.)
+- 📖 Documentación con Storybook
+- ✅ Tests unitarios con Vitest
 
 ## Estructura
 
 ```
 src/
-├── pages/          # Vistas (Home, About, 404)
+├── components/     # Componentes de negocio (ProductCard)
+├── context/        # Contextos React (Cart, Breadcrumb)
+├── data/           # Datos mock de productos
+├── hooks/          # Custom hooks
+├── layouts/        # Layouts (Header)
+├── pages/          # Vistas (Home, ProductDetail, NotFound)
+├── services/       # Servicios API
+├── styles/         # Variables CSS y estilos globales
+├── ui/             # Componentes UI reutilizables
 ├── utils/          # Funciones utilitarias
-├── test/           # Configuración de tests
 └── App.tsx         # Router principal
 ```
 
@@ -105,3 +132,14 @@ git push --tags
 ```
 
 El workflow de GitHub Actions creará automáticamente el release con notas de los commits.
+
+## Tecnologías
+
+- **React 18** - UI Library
+- **TypeScript** - Type safety
+- **Vite** - Build tool
+- **React Router** - Navegación
+- **Vitest** - Testing
+- **Storybook** - Documentación de componentes
+- **ESLint** - Linting
+- **Netlify** - Hosting
