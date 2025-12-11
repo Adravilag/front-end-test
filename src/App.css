@@ -13,21 +13,21 @@
 }
 
 .page p {
-  color: #888;
+  color: var(--color-text-muted);
 }
 
 .page a {
-  color: #646cff;
+  color: var(--color-primary);
   text-decoration: none;
   padding: 0.5rem 1rem;
-  border: 1px solid #646cff;
+  border: 1px solid var(--color-primary);
   border-radius: 8px;
   transition: all 0.2s;
 }
 
 .page a:hover {
-  background-color: #646cff;
-  color: white;
+  background-color: var(--color-primary);
+  color: var(--color-text-inverse);
 }
 
 /* Header Cart */
@@ -65,7 +65,7 @@
   height: 20px;
   padding: 0 6px;
   background-color: var(--color-primary);
-  color: white;
+  color: var(--color-text-inverse);
   font-size: 12px;
   font-weight: bold;
   border-radius: 10px;
