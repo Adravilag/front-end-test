@@ -13,13 +13,26 @@ interface CartItemRowProps {
   readonly item: CartItem
   readonly index: number
   readonly onRemove: (index: number) => void
+  readonly onUpdateQuantity: (index: number, quantity: number) => void
 }
 
-function CartItemRow({ item, index, onRemove }: Readonly<CartItemRowProps>) {
+function CartItemRow({ item, index, onRemove, onUpdateQuantity }: Readonly<CartItemRowProps>) {
   const handleRemove = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
     onRemove(index)
+  }
+
+  const handleDecrement = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    onUpdateQuantity(index, item.quantity - 1)
+  }
+
+  const handleIncrement = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    onUpdateQuantity(index, item.quantity + 1)
   }
 
   return (
@@ -38,27 +51,48 @@ function CartItemRow({ item, index, onRemove }: Readonly<CartItemRowProps>) {
           <span className="cart-dropdown-item-options">
             {item.colorName} · {item.storageName}
           </span>
-          <span className="cart-dropdown-item-price">{item.productPrice} €</span>
+          <span className="cart-dropdown-item-price">{item.productPrice * item.quantity} €</span>
         </div>
       </Link>
-      <button 
-        className="cart-dropdown-item-remove" 
-        onClick={handleRemove}
-        title="Eliminar"
-      >
-        <Icon name="close" size={14} />
-      </button>
+      <div className="cart-dropdown-item-actions">
+        <div className="cart-dropdown-quantity">
+          <button 
+            className="cart-dropdown-quantity-btn"
+            onClick={handleDecrement}
+            title="Reducir cantidad"
+          >
+            <Icon name="minus" size={14} />
+          </button>
+          <span className="cart-dropdown-quantity-value">{item.quantity}</span>
+          <button 
+            className="cart-dropdown-quantity-btn"
+            onClick={handleIncrement}
+            title="Aumentar cantidad"
+          >
+            <Icon name="plus" size={14} />
+          </button>
+        </div>
+        <button 
+          className="cart-dropdown-item-remove" 
+          onClick={handleRemove}
+          title="Eliminar"
+        >
+          <Icon name="close" size={14} />
+        </button>
+      </div>
     </div>
   )
 }
 
 export function CartDropdown({ isOpen, onClose }: Readonly<CartDropdownProps>) {
-  const { items, count, removeItem, clearCart } = useCart()
+  const { items, count, removeItem, updateQuantity, clearCart } = useCart()
   const [showConfirmClear, setShowConfirmClear] = useState(false)
+  const [isProcessingPayment, setIsProcessingPayment] = useState(false)
+  const [paymentSuccess, setPaymentSuccess] = useState(false)
 
   if (!isOpen) return null
 
-  const total = items.reduce((sum, item) => sum + item.productPrice, 0)
+  const total = items.reduce((sum, item) => sum + (item.productPrice * item.quantity), 0)
 
   const handleClearCart = () => {
     setShowConfirmClear(true)
@@ -71,6 +105,23 @@ export function CartDropdown({ isOpen, onClose }: Readonly<CartDropdownProps>) {
 
   const cancelClearCart = () => {
     setShowConfirmClear(false)
+  }
+
+  const handleCheckout = () => {
+    setIsProcessingPayment(true)
+    
+    // Simular procesamiento de pago
+    setTimeout(() => {
+      setIsProcessingPayment(false)
+      setPaymentSuccess(true)
+      
+      // Mostrar mensaje de éxito y limpiar carrito
+      setTimeout(() => {
+        clearCart()
+        setPaymentSuccess(false)
+        onClose()
+      }, 2000)
+    }, 1500)
   }
 
   return (
@@ -118,6 +169,7 @@ export function CartDropdown({ isOpen, onClose }: Readonly<CartDropdownProps>) {
                   item={item} 
                   index={index}
                   onRemove={removeItem}
+                  onUpdateQuantity={updateQuantity}
                 />
               ))}
             </div>
@@ -130,6 +182,25 @@ export function CartDropdown({ isOpen, onClose }: Readonly<CartDropdownProps>) {
               <span>Total</span>
               <span className="cart-dropdown-total-price">{total} €</span>
             </div>
+            <button 
+              className="cart-dropdown-checkout"
+              onClick={handleCheckout}
+              disabled={isProcessingPayment || paymentSuccess}
+            >
+              {isProcessingPayment ? (
+                <>
+                  <span className="cart-dropdown-spinner" />
+                  Procesando...
+                </>
+              ) : paymentSuccess ? (
+                <>
+                  <Icon name="check" size={18} />
+                  ¡Pago completado!
+                </>
+              ) : (
+                'Finalizar compra'
+              )}
+            </button>
           </div>
         )}
       </div>
