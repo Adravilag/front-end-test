@@ -1,5 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { renderHook, act, waitFor } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
+import { ReactNode } from 'react'
 import { useProductFilters, CATEGORIES } from './useProductFilters'
 import * as api from '../../../services/api'
 
@@ -35,6 +37,11 @@ const mockProducts = [
   },
 ]
 
+// Wrapper con Router para los tests
+const wrapper = ({ children }: { children: ReactNode }) => (
+  <MemoryRouter>{children}</MemoryRouter>
+)
+
 describe('useProductFilters', () => {
   beforeEach(() => {
     vi.mocked(api.getProducts).mockResolvedValue(mockProducts as any)
@@ -47,7 +54,7 @@ describe('useProductFilters', () => {
   // Eliminamos fake timers globales para evitar conflictos con waitFor
 
   it('inicia con valores por defecto', async () => {
-    const { result } = renderHook(() => useProductFilters())
+    const { result } = renderHook(() => useProductFilters(), { wrapper })
     
     expect(result.current.loading).toBe(true)
     
@@ -61,7 +68,7 @@ describe('useProductFilters', () => {
   })
 
   it('filtra productos por búsqueda después del debounce', async () => {
-    const { result } = renderHook(() => useProductFilters())
+    const { result } = renderHook(() => useProductFilters(), { wrapper })
     
     await waitFor(() => {
       expect(result.current.loading).toBe(false)
@@ -81,7 +88,7 @@ describe('useProductFilters', () => {
   })
 
   it('filtra productos por categoría inmediatamente', async () => {
-    const { result } = renderHook(() => useProductFilters())
+    const { result } = renderHook(() => useProductFilters(), { wrapper })
     
     await waitFor(() => {
       expect(result.current.loading).toBe(false)
@@ -96,7 +103,7 @@ describe('useProductFilters', () => {
   })
 
   it('combina filtros de búsqueda y categoría', async () => {
-    const { result } = renderHook(() => useProductFilters())
+    const { result } = renderHook(() => useProductFilters(), { wrapper })
     
     await waitFor(() => {
       expect(result.current.loading).toBe(false)
@@ -115,7 +122,7 @@ describe('useProductFilters', () => {
   })
 
   it('devuelve array vacío cuando no hay coincidencias', async () => {
-    const { result } = renderHook(() => useProductFilters())
+    const { result } = renderHook(() => useProductFilters(), { wrapper })
     
     await waitFor(() => {
       expect(result.current.loading).toBe(false)
