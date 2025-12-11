@@ -1,0 +1,190 @@
+.cart-dropdown-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 99;
+}
+
+.cart-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 360px;
+  max-height: 480px;
+  background: var(--color-surface, white);
+  border-radius: var(--radius-lg, 0.75rem);
+  box-shadow: var(--shadow-xl, 0 20px 25px -5px rgba(0, 0, 0, 0.1));
+  z-index: 100;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.cart-dropdown-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-md, 1rem);
+  border-bottom: 1px solid var(--color-border-light, #e5e7eb);
+
+  & h3 {
+    margin: 0;
+    font-size: var(--text-lg, 1.125rem);
+    font-weight: var(--font-semibold, 600);
+  }
+}
+
+.cart-dropdown-clear {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  color: var(--color-text-tertiary, #9ca3af);
+  cursor: pointer;
+  border-radius: var(--radius-full, 9999px);
+  transition: all 0.2s;
+
+  &:hover {
+    background: var(--color-bg-secondary, #f3f4f6);
+    color: var(--color-error, #ef4444);
+  }
+}
+
+.cart-dropdown-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--spacing-sm, 0.5rem);
+}
+
+.cart-dropdown-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xl, 2rem);
+  color: var(--color-text-tertiary, #9ca3af);
+  text-align: center;
+
+  & p {
+    margin: var(--spacing-sm, 0.5rem) 0 0;
+  }
+}
+
+.cart-dropdown-items {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs, 0.25rem);
+}
+
+.cart-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs, 0.25rem);
+  padding: var(--spacing-xs, 0.25rem);
+  border-radius: var(--radius-md, 0.5rem);
+  transition: background 0.2s;
+
+  &:hover {
+    background: var(--color-bg-secondary, #f3f4f6);
+  }
+}
+
+.cart-dropdown-item-link {
+  display: flex;
+  gap: var(--spacing-sm, 0.75rem);
+  flex: 1;
+  padding: var(--spacing-xs, 0.5rem);
+  text-decoration: none;
+  color: inherit;
+  min-width: 0;
+}
+
+.cart-dropdown-item-remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  color: var(--color-text-tertiary, #9ca3af);
+  cursor: pointer;
+  border-radius: var(--radius-full, 9999px);
+  transition: all 0.2s;
+  flex-shrink: 0;
+
+  &:hover {
+    background: var(--color-error-light, #fef2f2);
+    color: var(--color-error, #ef4444);
+  }
+}
+
+.cart-dropdown-item-image {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: var(--radius-md, 0.5rem);
+  background: var(--color-bg-secondary, #f3f4f6);
+}
+
+.cart-dropdown-item-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.cart-dropdown-item-name {
+  font-weight: var(--font-medium, 500);
+  font-size: var(--text-sm, 0.875rem);
+  color: var(--color-text-primary, #111827);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cart-dropdown-item-options {
+  font-size: var(--text-xs, 0.75rem);
+  color: var(--color-text-tertiary, #9ca3af);
+}
+
+.cart-dropdown-item-price {
+  font-weight: var(--font-semibold, 600);
+  font-size: var(--text-sm, 0.875rem);
+  color: var(--color-primary, #3b82f6);
+  margin-top: auto;
+}
+
+.cart-dropdown-footer {
+  padding: var(--spacing-md, 1rem);
+  border-top: 1px solid var(--color-border-light, #e5e7eb);
+}
+
+.cart-dropdown-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--text-base, 1rem);
+}
+
+.cart-dropdown-total-price {
+  font-weight: var(--font-bold, 700);
+  font-size: var(--text-lg, 1.125rem);
+  color: var(--color-text-primary, #111827);
+}
+
+@media (max-width: 480px) {
+  .cart-dropdown {
+    position: fixed;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-height: 70vh;
+    border-radius: var(--radius-lg, 0.75rem) var(--radius-lg, 0.75rem) 0 0;
+  }
+}
