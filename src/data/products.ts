@@ -17,6 +17,9 @@ export interface Product {
     storage?: string
     battery?: string
     camera?: string
+    os?: string
+    dimensions?: string
+    weight?: string
   }
   description: string
   options?: {
@@ -49,6 +52,9 @@ export const products: Product[] = [
       storage: '256GB',
       battery: '4422 mAh',
       camera: '48MP + 12MP + 12MP',
+      os: 'iOS 17',
+      dimensions: '159.9 x 76.7 x 8.25 mm',
+      weight: '221 g',
     },
     description: 'El iPhone más avanzado con chip A17 Pro, sistema de cámara pro y diseño de titanio.',
   },
@@ -73,6 +79,9 @@ export const products: Product[] = [
       storage: '256GB',
       battery: '5000 mAh',
       camera: '200MP + 12MP + 50MP + 10MP',
+      os: 'Android 14 / One UI 6.1',
+      dimensions: '162.3 x 79.0 x 8.6 mm',
+      weight: '232 g',
     },
     description: 'Potencia y productividad con Galaxy AI integrado y S Pen incluido.',
   },
@@ -98,6 +107,9 @@ export const products: Product[] = [
       storage: '128GB',
       battery: '5050 mAh',
       camera: '50MP + 48MP + 48MP',
+      os: 'Android 14',
+      dimensions: '162.6 x 76.5 x 8.8 mm',
+      weight: '213 g',
     },
     description: 'La mejor experiencia Android con IA de Google y 7 años de actualizaciones.',
   },
@@ -121,6 +133,9 @@ export const products: Product[] = [
       storage: '512GB',
       battery: '5000 mAh',
       camera: '50MP Leica x4',
+      os: 'Android 14 / HyperOS',
+      dimensions: '161.4 x 75.3 x 9.2 mm',
+      weight: '219 g',
     },
     description: 'Fotografía profesional con ópticas Leica y rendimiento extremo.',
   },
@@ -144,6 +159,9 @@ export const products: Product[] = [
       ram: '8GB',
       storage: '256GB',
       battery: '10 horas',
+      os: 'iPadOS 17',
+      dimensions: '280.6 x 214.9 x 6.4 mm',
+      weight: '682 g',
     },
     description: 'La tablet más potente con chip M2 y pantalla Liquid Retina XDR.',
   },
@@ -167,6 +185,9 @@ export const products: Product[] = [
       ram: '12GB',
       storage: '256GB',
       battery: '11200 mAh',
+      os: 'Android 13 / One UI 5.1',
+      dimensions: '326.4 x 208.6 x 5.5 mm',
+      weight: '732 g',
     },
     description: 'Pantalla inmersiva y productividad sin límites con S Pen incluido.',
   },
@@ -185,6 +206,8 @@ export const products: Product[] = [
     isNew: true,
     specs: {
       battery: '6 horas (30h con estuche)',
+      dimensions: '30.9 x 21.8 x 24.0 mm',
+      weight: '5.3 g (cada auricular)',
     },
     description: 'Audio espacial personalizado y cancelación activa de ruido.',
   },
@@ -199,7 +222,10 @@ export const products: Product[] = [
     ],
     category: 'accesorios',
     stock: 'out-of-stock',
-    specs: {},
+    specs: {
+      dimensions: '56 mm (diámetro)',
+      weight: '28 g',
+    },
     description: 'Carga inalámbrica rápida con alineación magnética perfecta.',
   },
 ]

@@ -10,6 +10,9 @@ const SPEC_LABELS: Record<string, string> = {
   storage: 'Almacenamiento',
   battery: 'Batería',
   camera: 'Cámara',
+  os: 'Sistema Operativo',
+  dimensions: 'Dimensiones',
+  weight: 'Peso',
 }
 
 interface BreadcrumbProps {
