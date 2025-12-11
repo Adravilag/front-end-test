@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useCart, type CartItem } from '../../context/CartContext'
 import { Icon } from '../../ui'
@@ -37,7 +38,7 @@ function CartItemRow({ item, index, onRemove }: Readonly<CartItemRowProps>) {
           <span className="cart-dropdown-item-options">
             {item.colorName} · {item.storageName}
           </span>
-          <span className="cart-dropdown-item-price">${item.productPrice}</span>
+          <span className="cart-dropdown-item-price">{item.productPrice} €</span>
         </div>
       </Link>
       <button 
@@ -53,10 +54,24 @@ function CartItemRow({ item, index, onRemove }: Readonly<CartItemRowProps>) {
 
 export function CartDropdown({ isOpen, onClose }: Readonly<CartDropdownProps>) {
   const { items, count, removeItem, clearCart } = useCart()
+  const [showConfirmClear, setShowConfirmClear] = useState(false)
 
   if (!isOpen) return null
 
   const total = items.reduce((sum, item) => sum + item.productPrice, 0)
+
+  const handleClearCart = () => {
+    setShowConfirmClear(true)
+  }
+
+  const confirmClearCart = () => {
+    clearCart()
+    setShowConfirmClear(false)
+  }
+
+  const cancelClearCart = () => {
+    setShowConfirmClear(false)
+  }
 
   return (
     <>
@@ -67,13 +82,27 @@ export function CartDropdown({ isOpen, onClose }: Readonly<CartDropdownProps>) {
           {items.length > 0 && (
             <button 
               className="cart-dropdown-clear" 
-              onClick={clearCart}
+              onClick={handleClearCart}
               title="Vaciar carrito"
             >
               <Icon name="close" size={16} />
             </button>
           )}
         </div>
+
+        {showConfirmClear && (
+          <div className="cart-dropdown-confirm">
+            <p>¿Vaciar el carrito?</p>
+            <div className="cart-dropdown-confirm-actions">
+              <button className="cart-dropdown-confirm-cancel" onClick={cancelClearCart}>
+                Cancelar
+              </button>
+              <button className="cart-dropdown-confirm-ok" onClick={confirmClearCart}>
+                Vaciar
+              </button>
+            </div>
+          </div>
+        )}
 
         <div className="cart-dropdown-content">
           {items.length === 0 ? (
@@ -85,7 +114,7 @@ export function CartDropdown({ isOpen, onClose }: Readonly<CartDropdownProps>) {
             <div className="cart-dropdown-items">
               {items.map((item, index) => (
                 <CartItemRow 
-                  key={`${item.productId}-${item.addedAt}-${index}`} 
+                  key={`${item.productId}-${item.colorCode}-${item.storageCode}`} 
                   item={item} 
                   index={index}
                   onRemove={removeItem}
