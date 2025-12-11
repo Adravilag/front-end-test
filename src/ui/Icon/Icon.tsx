@@ -13,6 +13,10 @@ export const ICON_NAMES = [
   'bag',
   'cart',
   'cart-add',
+  'info',
+  'alert',
+  'error',
+  'check',
 ] as const
 
 export type IconName = (typeof ICON_NAMES)[number]
