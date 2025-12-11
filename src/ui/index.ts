@@ -19,3 +19,6 @@ export type { CarouselProps } from './Carousel'
 
 export { PanelAction } from './PanelAction'
 export type { PanelActionProps, PanelActionVariant } from './PanelAction'
+
+export { PaginatedGrid } from './PaginatedList'
+export type { PaginatedGridProps } from './PaginatedList'

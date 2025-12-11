@@ -1,6 +1,6 @@
 import { ProductCard } from '../../components'
-import { Input, Icon } from '../../ui'
-import { HeroSection, CategoryFilter, EmptyState, ProductsHeader } from './components'
+import { Input, Icon, PaginatedGrid } from '../../ui'
+import { HeroSection, CategoryFilter, EmptyState } from './components'
 import { useProductFilters, CATEGORIES, type CategoryFilter as CategoryType } from './hooks'
 import './Home.css'
 
@@ -32,18 +32,19 @@ export default function Home() {
       </section>
 
       <section className="home-products">
-        <ProductsHeader category={category} count={filteredProducts.length} />
-
         {loading ? (
           <div className="home-loading" style={{ textAlign: 'center', padding: '4rem' }}>
             <p>Cargando productos...</p>
           </div>
         ) : filteredProducts.length > 0 ? (
-          <div className="home-products-grid">
-            {filteredProducts.map(product => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
+          <PaginatedGrid
+            items={filteredProducts}
+            renderItem={(product) => <ProductCard product={product} />}
+            keyExtractor={(product) => product.id}
+            itemsPerPage={12}
+            columns={4}
+            itemsLabel="productos"
+          />
         ) : (
           <EmptyState />
         )}

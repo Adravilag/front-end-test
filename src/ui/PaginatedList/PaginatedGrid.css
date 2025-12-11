@@ -1,0 +1,214 @@
+.paginated-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+/* Grid responsive - igual que home-products-grid */
+.paginated-grid-content {
+  display: grid;
+  gap: var(--space-6);
+}
+
+/* Columnas por defecto: responsive como el grid de productos */
+.paginated-grid-cols-4 {
+  grid-template-columns: repeat(1, 1fr);
+
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (min-width: 1280px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.paginated-grid-cols-1 {
+  grid-template-columns: repeat(1, 1fr);
+}
+
+.paginated-grid-cols-2 {
+  grid-template-columns: repeat(1, 1fr);
+
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.paginated-grid-cols-3 {
+  grid-template-columns: repeat(1, 1fr);
+
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.paginated-grid-cols-5 {
+  grid-template-columns: repeat(1, 1fr);
+
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  @media (min-width: 1280px) {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+.paginated-grid-cols-6 {
+  grid-template-columns: repeat(1, 1fr);
+
+  @media (min-width: 480px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  @media (min-width: 1280px) {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  @media (min-width: 1536px) {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+.paginated-grid-footer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.paginated-grid-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+
+  @media (min-width: 640px) {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-6);
+  }
+}
+
+.paginated-grid-count {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+
+  & strong {
+    color: var(--color-text);
+    font-weight: 600;
+  }
+}
+
+.paginated-grid-per-page {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+
+  & label {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+}
+
+.paginated-grid-select {
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--text-sm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+
+  &:hover {
+    border-color: var(--color-border-hover);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 2px var(--color-primary-alpha);
+  }
+}
+
+.paginated-grid-pagination {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.paginated-grid-pages {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.paginated-grid-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 36px;
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-text);
+  background-color: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover:not(.paginated-grid-page--active) {
+    background-color: var(--color-surface-hover);
+    border-color: var(--color-border-hover);
+  }
+
+  &.paginated-grid-page--active {
+    color: var(--color-primary-contrast);
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+  }
+}
+
+.paginated-grid-ellipsis {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 36px;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
