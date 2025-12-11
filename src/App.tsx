@@ -1,16 +1,15 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
-import About from './pages/About'
+import ProductDetail from './pages/ProductDetail'
 import NotFound from './pages/NotFound'
 import { Header } from './layouts'
 import './App.css'
 
 const navItems = [
   { label: 'Inicio', href: '/' },
-  { label: 'Smartphones', href: '/smartphones' },
-  { label: 'Tablets', href: '/tablets' },
-  { label: 'Accesorios', href: '/accesorios' },
-  { label: 'Ofertas', href: '/ofertas' },
+  { label: 'Smartphones', href: '/?category=smartphones' },
+  { label: 'Tablets', href: '/?category=tablets' },
+  { label: 'Accesorios', href: '/?category=accesorios' },
 ]
 
 function App() {
@@ -25,7 +24,7 @@ function App() {
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
+          <Route path="/producto/:id" element={<ProductDetail />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
