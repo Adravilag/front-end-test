@@ -17,6 +17,8 @@ export const ICON_NAMES = [
   'alert',
   'error',
   'check',
+  'plus',
+  'minus',
 ] as const
 
 export type IconName = (typeof ICON_NAMES)[number]
