@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useMemo } from 'react'
 import type { HeaderProps } from './Header.types'
 import { HeaderLogo } from './HeaderLogo'
 import { HeaderNav } from './HeaderNav'
@@ -21,37 +21,34 @@ export function Header(props: Readonly<HeaderProps>) {
     actions,
     sticky = true,
     className = '',
-    onMenuClick,
     showSearch = false,
     onSearch,
     breadcrumbItems,
   } = props
 
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const headerClass = useHeaderClass(sticky, className)
-
-  const handleMenuToggle = () => {
-    setMobileMenuOpen((prev) => !prev)
-    onMenuClick?.() // Llama la función de manera segura
-  }
 
   return (
     <header className={headerClass}>
       <div className="header-container">
-        <HeaderLogo logo={logo} />
-        {breadcrumbItems && breadcrumbItems.length > 0 && (
-          <Breadcrumb items={breadcrumbItems} className="header-breadcrumb" />
-        )}
+        <div className="header-left">
+          <HeaderLogo logo={logo} />
+          {breadcrumbItems && breadcrumbItems.length > 0 && (
+            <Breadcrumb items={breadcrumbItems} className="header-breadcrumb" />
+          )}
+        </div>
         <HeaderNav items={navItems} className="header-nav-desktop" />
         <HeaderActions
           showSearch={showSearch}
           onSearch={onSearch}
           actions={actions}
-          mobileMenuOpen={mobileMenuOpen}
-          onMenuToggle={handleMenuToggle}
         />
       </div>
-      {mobileMenuOpen && <HeaderNav items={navItems} className="header-nav-mobile" />}
+      {breadcrumbItems && breadcrumbItems.length > 0 && (
+        <div className="header-breadcrumb-mobile">
+          <Breadcrumb items={breadcrumbItems} />
+        </div>
+      )}
     </header>
   )
 }

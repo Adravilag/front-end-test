@@ -23,8 +23,6 @@ export interface HeaderProps {
   readonly sticky?: boolean
   /** Clase CSS adicional */
   readonly className?: string
-  /** Callback al hacer click en el menú móvil */
-  readonly onMenuClick?: () => void
   /** Mostrar buscador */
   readonly showSearch?: boolean
   /** Callback al buscar */

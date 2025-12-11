@@ -1,6 +1,5 @@
 import { useState, type ReactNode } from 'react'
 import { HeaderSearch } from './HeaderSearch'
-import { HeaderMenuButton } from './HeaderMenuButton'
 import { CartDropdown } from './CartDropdown'
 import { Icon } from '../../ui'
 import { useCart } from '../../context/CartContext'
@@ -9,16 +8,12 @@ interface HeaderActionsProps {
   readonly showSearch: boolean
   readonly onSearch?: (query: string) => void
   readonly actions?: ReactNode
-  readonly mobileMenuOpen: boolean
-  readonly onMenuToggle: () => void
 }
 
 export function HeaderActions({
   showSearch,
   onSearch,
   actions,
-  mobileMenuOpen,
-  onMenuToggle,
 }: Readonly<HeaderActionsProps>) {
   const { count } = useCart()
   const [cartOpen, setCartOpen] = useState(false)
@@ -41,7 +36,6 @@ export function HeaderActions({
       </div>
 
       {actions}
-      <HeaderMenuButton isOpen={mobileMenuOpen} onToggle={onMenuToggle} />
     </div>
   )
 }
