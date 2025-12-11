@@ -22,7 +22,6 @@ const meta = {
     },
   },
   args: {
-    onMenuClick: fn(),
     onSearch: fn(),
   },
 } satisfies Meta<typeof Header>

@@ -65,25 +65,7 @@ describe('Header', () => {
     expect(container.querySelector('.header-sticky')).not.toBeInTheDocument()
   })
 
-  it('toggles mobile menu on button click', () => {
-    const navItems = [{ label: 'Inicio', href: '/' }]
-    renderWithRouter(<Header navItems={navItems} />)
-    
-    const menuButton = screen.getByRole('button', { name: /abrir menú/i })
-    fireEvent.click(menuButton)
-    
-    expect(screen.getByRole('button', { name: /cerrar menú/i })).toBeInTheDocument()
-  })
 
-  it('calls onMenuClick when menu button is clicked', () => {
-    const handleMenuClick = vi.fn()
-    renderWithRouter(<Header onMenuClick={handleMenuClick} />)
-    
-    const menuButton = screen.getByRole('button', { name: /abrir menú/i })
-    fireEvent.click(menuButton)
-    
-    expect(handleMenuClick).toHaveBeenCalledTimes(1)
-  })
 
   it('shows search button when showSearch is true', () => {
     renderWithRouter(<Header showSearch />)
