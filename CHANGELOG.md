@@ -13,6 +13,20 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 - ci: auto-actualizar CHANGELOG y package.json en releases
 - docs: release v0.1.0
 
+## [0.1.0] - 2025-12-11
+
+### Added
+- Configuración inicial del proyecto React + TypeScript + Vite
+- Componente App base con estilos
+- Routing SPA con React Router (Home, About, 404)
+- Tests con Vitest y React Testing Library
+- ESLint configurado para TypeScript
+- Path aliases (@/, @components/, @utils/, etc.)
+- GitHub Actions para releases automáticos
+- Sprite SVG para iconos
+- Script Base64 para generación de tokens
+- README y documentación
+
 ---
 
 ## Formato de commits

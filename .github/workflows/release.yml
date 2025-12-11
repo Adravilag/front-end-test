@@ -47,8 +47,11 @@ jobs:
           DATE=$(date +%Y-%m-%d)
           COMMITS="${{ steps.notes.outputs.commits }}"
           
-          # Crear nuevo contenido del changelog
-          cat > CHANGELOG_NEW.md << 'HEADER'
+          # Extraer versiones anteriores (todo después de ## [Unreleased])
+          PREVIOUS_VERSIONS=$(sed -n '/^## \[Unreleased\]/,${/^## \[Unreleased\]/d;p}' CHANGELOG.md | sed '/^---$/,$d')
+          
+          # Crear nuevo CHANGELOG
+          cat > CHANGELOG.md << EOF
           # Changelog
 
           Todos los cambios notables de este proyecto serán documentados en este archivo.
@@ -58,28 +61,20 @@ jobs:
 
           ## [Unreleased]
 
-          HEADER
-          
-          echo "## [$VERSION] - $DATE" >> CHANGELOG_NEW.md
-          echo "" >> CHANGELOG_NEW.md
-          echo "### Changed" >> CHANGELOG_NEW.md
-          echo "$COMMITS" >> CHANGELOG_NEW.md
-          echo "" >> CHANGELOG_NEW.md
-          
-          # Añadir versiones anteriores (si existen)
-          if grep -q "## \[" CHANGELOG.md; then
-            sed -n '/## \[0-9\]/,$p' CHANGELOG.md | tail -n +2 >> CHANGELOG_NEW.md 2>/dev/null || true
-          fi
-          
-          # Añadir sección de formato de commits
-          cat >> CHANGELOG_NEW.md << 'FOOTER'
+          ## [$VERSION] - $DATE
+
+          ### Changed
+          $COMMITS
+
+          $PREVIOUS_VERSIONS
+
           ---
 
           ## Formato de commits
 
           Usar [Conventional Commits](https://www.conventionalcommits.org/):
 
-          ```
+          \`\`\`
           feat: nueva funcionalidad
           fix: corrección de bug
           docs: cambios en documentación
@@ -88,10 +83,11 @@ jobs:
           test: añadir o modificar tests
           chore: tareas de mantenimiento
           ci: cambios en CI/CD
-          ```
-          FOOTER
+          \`\`\`
+          EOF
           
-          mv CHANGELOG_NEW.md CHANGELOG.md
+          # Limpiar espacios extra
+          sed -i 's/^          //g' CHANGELOG.md
 
       - name: Update package.json version
         run: |
