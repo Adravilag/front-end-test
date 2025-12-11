@@ -3,11 +3,13 @@ import Home from './pages/Home'
 import ProductDetail from './pages/ProductDetail'
 import NotFound from './pages/NotFound/NotFound'
 import { Header } from './layouts'
-import { BreadcrumbProvider, useBreadcrumbContext } from './context'
+import { BreadcrumbProvider, useBreadcrumbContext, useCart } from './context'
+import { Toast } from './ui'
 import './App.css'
 
 function AppContent() {
   const { items: breadcrumbItems } = useBreadcrumbContext()
+  const { notification, dismissNotification } = useCart()
 
   return (
     <>
@@ -23,6 +25,13 @@ function AppContent() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
+      {notification && (
+        <Toast 
+          message={notification} 
+          onDismiss={dismissNotification}
+          type="warning"
+        />
+      )}
     </>
   )
 }

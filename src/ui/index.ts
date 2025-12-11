@@ -25,3 +25,5 @@ export type { PaginatedGridProps } from './PaginatedList'
 
 export { Breadcrumb } from './Breadcrumb'
 export type { BreadcrumbProps, BreadcrumbItem } from './Breadcrumb'
+
+export { Toast } from './Toast'

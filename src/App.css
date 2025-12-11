@@ -31,6 +31,10 @@
 }
 
 /* Header Cart */
+.header-cart-wrapper {
+  position: relative;
+}
+
 .header-cart {
   position: relative;
   display: flex;
@@ -39,6 +43,15 @@
   width: 40px;
   height: 40px;
   color: var(--color-text-primary);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  border-radius: var(--radius-full, 9999px);
+  transition: background 0.2s;
+
+  &:hover {
+    background: var(--color-bg-secondary, #f3f4f6);
+  }
 }
 
 .header-cart-count {
