@@ -3,9 +3,14 @@
   display: flex;
   flex-direction: column;
   transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  border-radius: var(--product-card-radius);
+  overflow: hidden;
+  background-color: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 
   &:hover {
     transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
   }
 }
 
@@ -20,13 +25,17 @@
   position: relative;
   aspect-ratio: 1;
   overflow: hidden;
-  background-color: var(--color-bg-secondary);
+  background-color: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   & img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     transition: transform var(--transition-normal);
+    padding: var(--space-2);
   }
 
   .product-card:hover & img {
