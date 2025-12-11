@@ -7,6 +7,8 @@ y este proyecto sigue [Semantic Versioning](https://semver.org/lang/es/).
 
 ## [Unreleased]
 
+## [0.1.0] - 2025-12-11
+
 ### Added
 - Configuración inicial del proyecto React + TypeScript + Vite
 - Componente App base con estilos
